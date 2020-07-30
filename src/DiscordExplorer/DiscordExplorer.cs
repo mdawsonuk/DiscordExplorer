@@ -11,8 +11,6 @@ namespace DiscordExplorer
         {
             InitializeComponent();
 
-            //Load += (s, e) => LoadDiscordFiles();
-
             SplitContainer.Paint += PaintHandle;
         }
         
@@ -38,20 +36,35 @@ namespace DiscordExplorer
 
         public void LoadDiscordFiles()
         {
-            using (var cacheLocation = new FolderBrowserDialog())
+            using var indexFile = new OpenFileDialog
             {
-                cacheLocation.ShowNewFolderButton = false;
-                cacheLocation.Description = "Select Discord Cache Folder";
-                cacheLocation.UseDescriptionForTitle = true;
-                cacheLocation.SelectedPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Path.Combine("Discord", "Cache"));
-                DialogResult result = cacheLocation.ShowDialog();
+                AddExtension = false,
+                RestoreDirectory = true,
+                Filter = "Cache Index|index|All files|*.*"
+            };
 
-                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(cacheLocation.SelectedPath))
+            DialogResult result = indexFile.ShowDialog();
+
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(indexFile.FileName))
+            {
+                string[] files = Directory.GetFiles(Path.GetDirectoryName(indexFile.FileName));
+
+                int fFiles = 0;
+                int dataFiles = 0;
+                foreach (string file in files)
                 {
-                    string[] files = Directory.GetFiles(cacheLocation.SelectedPath);
-
-                    MessageBox.Show("Files found: " + files.Length.ToString(), " in Discord Cache");
+                    string fileName = Path.GetFileName(file);
+                    if (fileName.StartsWith("f_"))
+                    {
+                        fFiles += 1;
+                    }
+                    if (fileName.StartsWith("data_"))
+                    {
+                        dataFiles += 1;
+                    }
                 }
+
+                MessageBox.Show($"Cache found {dataFiles} data_x files and {fFiles} f_xxxxxx files in the cache", "Discord Cache", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
         }
     }
