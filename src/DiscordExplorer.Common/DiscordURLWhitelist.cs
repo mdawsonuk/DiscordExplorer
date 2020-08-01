@@ -16,11 +16,13 @@ namespace DiscordExplorer.Common
             { "https://cdn.discordapp.com/avatars/*/*.gif", EDiscordExplorerCategory.Files | EDiscordExplorerCategory.Profiles },
             { "https://cdn.discordapp.com/icons/*/*.webp", EDiscordExplorerCategory.Files | EDiscordExplorerCategory.Servers },
             { "https://cdn.discordapp.com/icons/*/*.gif", EDiscordExplorerCategory.Files | EDiscordExplorerCategory.Servers },
+            { "https://cdn.discordapp.com/streams/guild:*:*/*", EDiscordExplorerCategory.Files | EDiscordExplorerCategory.Servers },
             #endregion
 
             #region discordapp.com/api/v6
             { "https://discordapp.com/api/v6/channels/*/messages/*/reactions/*", EDiscordExplorerCategory.Messages },
             { "https://discordapp.com/api/v6/channels/*/messages", EDiscordExplorerCategory.Messages },
+            { "https://discordapp.com/api/v6/channels/*/pins", EDiscordExplorerCategory.Messages | EDiscordExplorerCategory.Servers },
             { "https://discordapp.com/api/v6/users/*/profile", EDiscordExplorerCategory.Profiles },
             { "https://discordapp.com/api/v6/users/@me/affinities/guilds", EDiscordExplorerCategory.LocalUser | EDiscordExplorerCategory.Servers},
             { "https://discordapp.com/api/v6/users/@me/affinities/users", EDiscordExplorerCategory.LocalUser | EDiscordExplorerCategory.Profiles},
