@@ -8,7 +8,7 @@
   <p align="center">
     <a href="LICENCE" alt="Licence">
 		<img src="https://img.shields.io/github/license/mdawsonuk/DiscordExplorer?style=flat-square" /></a>
-	<a href="#backers" alt="Releases">
+	<a alt="Releases">
 		<img src="https://img.shields.io/github/v/release/mdawsonuk/DiscordExplorer?include_prereleases&style=flat-square&color=blue" /></a>
 	<a href="https://github.com/mdawsonuk/DiscordExplorer/issues" alt="Issues">
 		<img src="https://img.shields.io/github/issues/mdawsonuk/DiscordExplorer?style=flat-square" /></a>
@@ -16,24 +16,22 @@
 		<img src="https://img.shields.io/github/downloads/mdawsonuk/DiscordExplorer/total?style=flat-square" /></a>
 	<a href="https://github.com/mdawsonuk/DiscordExplorer/pulse" alt="Maintenance">
 		<img src="https://img.shields.io/maintenance/yes/2020?style=flat-square" /></a>
-	<a>
+	<a href="https://github.com/mdawsonuk/DiscordExplorer/">
 		<img src="https://img.shields.io/github/languages/code-size/mdawsonuk/DiscordExplorer?style=flat-square"
 			alt="Repo Size"></a>
   </p>
   <p align="center">
     Parses the Discord cache files to retrieve emotes, messages, attachments, profiles and more
     <br />
-    <a href="https://github.com/mdawsonuk/DiscordExplorer"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/mdawsonuk/DiscordExplorer/wiki"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/mdawsonuk/DiscordExplorer/issues">Report a Bug</a>
+    <a href="https://github.com/mdawsonuk/DiscordExplorer/issues/new?labels=bug">Report a Bug</a>
     ·
-    <a href="https://github.com/mdawsonuk/DiscordExplorer/issues">Request Feature</a>
+    <a href="https://github.com/mdawsonuk/DiscordExplorer/issues/new?labels=enhancement">Request Feature</a>
   </p>
 </p>
 
-
-<!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
 * [About the Project](#about-the-project)
@@ -47,13 +45,8 @@
 * [Contact](#contact)
 * [Acknowledgements](#acknowledgements)-->
 
-
-
-<!-- ABOUT THE PROJECT -->
 ## About The Project
-
 [![Product Name Screen Shot][product-screenshot]]()
-
 Discord Explorer was created due to the lack of reliable Discord Digital Forensics tools.
 Existing tools would parse database files which no long exist, or only parse cached image files.
 The aim of this project is to parse the Discord Cache found in `%appdata\Discord\Cache` 
@@ -71,7 +64,6 @@ Core features:
 * Reconstruct message threads in a like-for-like Discord preview window
 * Export all files extracted from cache - Discord's JSON files, images, videos and more
 
-<!-- GETTING STARTED -->
 ## Getting Started
 
 To get a local copy up and running follow these simple steps.
@@ -89,23 +81,17 @@ Discord Explorer's GUI can be run with Mono on Linux and OS X, but it is recomme
 git clone https://github.com/mdawsonuk/DiscordExplorer.git
 ```
 
-<!-- USAGE EXAMPLES
+<!--
 ## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
-
-
-<!-- ROADMAP
 ## Roadmap
 
 See the [open issues](https://github.com/mdawsonuk/DiscordExplorer/issues) for a list of proposed features (and known issues).
 
-
-
-<!-- CONTRIBUTING
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -114,21 +100,17 @@ Contributions are what make the open source community such an amazing place to b
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+5. Open a Pull Request-->
 
-
-
-<!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See [LICENSE](LICENCE) for more information.
 
-<!-- CONTACT
+<!--
 ## Contact
 
 Project Link: [https://github.com/mdawsonuk/DiscordExplorer](https://github.com/mdawsonuk/DiscordExplorer)
 
-<!-- ACKNOWLEDGEMENTS
 ## Acknowledgements
 
 * []()
