@@ -1,3 +1,4 @@
+using Sentry;
 using System;
 using System.Windows.Forms;
 
@@ -11,10 +12,14 @@ namespace DiscordExplorer
         [STAThread]
         static void Main()
         {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new DiscordExplorer());
+            using (SentrySdk.Init("https://e32d14bd656a4aa58b67e8902f5b60ba@o428565.ingest.sentry.io/5374124"))
+            {
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+                Application.SetHighDpiMode(HighDpiMode.SystemAware);
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new DiscordExplorer());
+            }
         }
     }
 }

@@ -17,6 +17,19 @@ namespace DiscordExplorer
 
             MessagesSplitContainer.Paint += PaintHandle;
             ProfilesSplitContainer.Paint += PaintHandle;
+
+            StripStatusLabel.Text = "No cache loaded";
+            StripProgressBar.Visible = false;
+
+            FormClosing += (s, e) =>
+            {
+                DialogResult confirmClose = MessageBox.Show("Are you sure you want to exit?", "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (confirmClose == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            };
         }
         
         private void PaintHandle(object sender, PaintEventArgs p)
@@ -57,6 +70,27 @@ namespace DiscordExplorer
             ProfilesData.AutoResizeColumns();
         }
 
+        private void OnViewGithubClick(object sender, EventArgs e)
+        {
+            var ps = new ProcessStartInfo("https://github.com/mdawsonuk/DiscordExplorer/")
+            {
+                UseShellExecute = true,
+                Verb = "open"
+            };
+            Process.Start(ps);
+        }
+
+        private void OnAboutButtonClick(object sender, EventArgs e)
+        {
+            AboutBox aboutBox = new AboutBox();
+            aboutBox.ShowDialog();
+        }
+
+        private void OnExitButtonClick(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
         public void LoadDiscordFiles()
         {
             using var indexFile = new OpenFileDialog
@@ -70,6 +104,9 @@ namespace DiscordExplorer
 
             if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(indexFile.FileName))
             {
+                StripStatusLabel.Text = "Loading Cache";
+                StripProgressBar.Visible = true;
+
                 Stopwatch timer = new Stopwatch();
                 timer.Start();
 
@@ -91,7 +128,10 @@ namespace DiscordExplorer
                 }
 
                 timer.Stop();
-                MessageBox.Show(string.Format("Parse Complete!\nParsing took {0} seconds\nData_x files found: {1}\nf_xxxxxx files found: {2}\nOther files found: {3}\nTotal files found: {4}", timer.Elapsed.TotalSeconds.ToString("0.000"), dataFiles, fFiles, files.Length - (fFiles + dataFiles), files.Length), "Parsing Discord Cache", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(string.Format("Parse Complete!\nParsing took {0} seconds\nData_x files found: {1}\nf_xxxxxx files found: {2}\nOther files found: {3}\nTotal files found: {4}", timer.Elapsed.TotalSeconds.ToString("0.00"), dataFiles, fFiles, files.Length - (fFiles + dataFiles), files.Length), "Parsing Discord Cache", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+
+                StripStatusLabel.Text = string.Format("Loaded Cache ({0}s)", timer.Elapsed.TotalSeconds.ToString("0.000"));
+                StripProgressBar.Visible = false;
             }
         }
     }

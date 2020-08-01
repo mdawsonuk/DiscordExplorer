@@ -10,12 +10,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordExplorer", "DiscordE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordExplorer.CacheParser", "DiscordExplorer.CacheParser\DiscordExplorer.CacheParser.csproj", "{16E40939-3B79-46A6-B71A-4F14B2F90FCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordExplorer.Common", "DiscordExplorer.Common\DiscordExplorer.Common.csproj", "{6BB6342D-D1B2-4EBA-8B0D-6E00CF4A1848}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordExplorer.Common", "DiscordExplorer.Common\DiscordExplorer.Common.csproj", "{6BB6342D-D1B2-4EBA-8B0D-6E00CF4A1848}"
 	ProjectSection(ProjectDependencies) = postProject
 		{16E40939-3B79-46A6-B71A-4F14B2F90FCE} = {16E40939-3B79-46A6-B71A-4F14B2F90FCE}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordExplorer.Common.Tests", "DiscordExplorer.Common.Tests\DiscordExplorer.Common.Tests.csproj", "{6A9B4F5C-B633-4320-8475-D703D97D2287}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordExplorer.Common.Tests", "DiscordExplorer.Common.Tests\DiscordExplorer.Common.Tests.csproj", "{6A9B4F5C-B633-4320-8475-D703D97D2287}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

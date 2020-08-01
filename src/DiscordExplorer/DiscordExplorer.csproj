@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Humanizer" Version="2.8.26" />
+    <PackageReference Include="NLog" Version="4.7.3" />
+    <PackageReference Include="Sentry" Version="2.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DiscordExplorer.Common\DiscordExplorer.Common.csproj" />
   </ItemGroup>
 

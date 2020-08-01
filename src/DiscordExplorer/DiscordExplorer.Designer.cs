@@ -39,9 +39,10 @@
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.Strip = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.StripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.TabControl = new System.Windows.Forms.TabControl();
             this.LocalUser = new System.Windows.Forms.TabPage();
             this.Messages = new System.Windows.Forms.TabPage();
@@ -52,6 +53,7 @@
             this.Profiles = new System.Windows.Forms.TabPage();
             this.ProfilesSplitContainer = new System.Windows.Forms.SplitContainer();
             this.ProfilesData = new System.Windows.Forms.DataGridView();
+            this.CacheURLs = new System.Windows.Forms.TabPage();
             this.Menu.SuspendLayout();
             this.Strip.SuspendLayout();
             this.TabControl.SuspendLayout();
@@ -109,8 +111,10 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
             this.exitToolStripMenuItem.Text = "E&xit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.OnExitButtonClick);
             // 
             // toolsToolStripMenuItem
             // 
@@ -129,7 +133,8 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.toolStripMenuItem1});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.helpToolStripMenuItem.Text = "&Help";
@@ -137,15 +142,23 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(142, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
             this.aboutToolStripMenuItem.Text = "&About...";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.OnAboutButtonClick);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(196, 26);
+            this.toolStripMenuItem1.Text = "View on GitHub";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.OnViewGithubClick);
             // 
             // Strip
             // 
             this.Strip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.Strip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1,
-            this.toolStripProgressBar1});
+            this.StripStatusLabel,
+            this.StripProgressBar});
             this.Strip.Location = new System.Drawing.Point(0, 914);
             this.Strip.Name = "Strip";
             this.Strip.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
@@ -153,18 +166,18 @@
             this.Strip.TabIndex = 1;
             this.Strip.Text = "Strip";
             // 
-            // toolStripStatusLabel1
+            // StripStatusLabel
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(116, 21);
-            this.toolStripStatusLabel1.Text = "Loading Cache...";
+            this.StripStatusLabel.Name = "StripStatusLabel";
+            this.StripStatusLabel.Size = new System.Drawing.Size(116, 21);
+            this.StripStatusLabel.Text = "Loading Cache...";
             // 
-            // toolStripProgressBar1
+            // StripProgressBar
             // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(114, 19);
-            this.toolStripProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.toolStripProgressBar1.Value = 50;
+            this.StripProgressBar.Name = "StripProgressBar";
+            this.StripProgressBar.Size = new System.Drawing.Size(114, 19);
+            this.StripProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.StripProgressBar.Value = 20;
             // 
             // TabControl
             // 
@@ -173,6 +186,7 @@
             this.TabControl.Controls.Add(this.Files);
             this.TabControl.Controls.Add(this.Servers);
             this.TabControl.Controls.Add(this.Profiles);
+            this.TabControl.Controls.Add(this.CacheURLs);
             this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TabControl.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.TabControl.Location = new System.Drawing.Point(0, 30);
@@ -307,6 +321,14 @@
             this.ProfilesData.Size = new System.Drawing.Size(1033, 851);
             this.ProfilesData.TabIndex = 0;
             // 
+            // CacheURLs
+            // 
+            this.CacheURLs.Location = new System.Drawing.Point(4, 29);
+            this.CacheURLs.Name = "CacheURLs";
+            this.CacheURLs.Size = new System.Drawing.Size(1489, 851);
+            this.CacheURLs.TabIndex = 6;
+            this.CacheURLs.Text = "Cache URLs";
+            // 
             // DiscordExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -316,7 +338,6 @@
             this.Controls.Add(this.Strip);
             this.Controls.Add(this.Menu);
             this.DoubleBuffered = true;
-            this.HelpButton = true;
             this.MainMenuStrip = this.Menu;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MinimumSize = new System.Drawing.Size(796, 515);
@@ -357,8 +378,8 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.StatusStrip Strip;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.ToolStripStatusLabel StripStatusLabel;
+        private System.Windows.Forms.ToolStripProgressBar StripProgressBar;
         private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.TabPage Messages;
         private System.Windows.Forms.SplitContainer MessagesSplitContainer;
@@ -369,6 +390,8 @@
         private System.Windows.Forms.DataGridView MessagesData;
         private System.Windows.Forms.SplitContainer ProfilesSplitContainer;
         private System.Windows.Forms.DataGridView ProfilesData;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.TabPage CacheURLs;
     }
 }
 
