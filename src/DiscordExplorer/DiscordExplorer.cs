@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiscordExplorer.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -9,41 +10,13 @@ namespace DiscordExplorer
 {
     public partial class DiscordExplorer : Form
     {
-        public class DiscordMessage
-        {
-            public long UserID { get; set; }
-            public string Username { get; set; }
-            public string Discriminator { get; set; }
-            public long ChannelID { get; set; }
-            public long MessageID { get; set; }
-            public string Message { get; set; }
-            public bool Pinned { get; set; }
-            public bool TTS { get; set; }
-            public bool DidMentionEveryone { get; set; }
-            public DateTime Timestamp { get; set; }
-            public DateTime? EditedTimestamp { get; set; }
-
-            public DiscordMessage(long userID, string username, string discriminator, long channelID, long messageID, string message, DateTime timestamp, bool pinned = false, bool tts = false, bool mentionEveryone = false, DateTime? editTimestamp = null)
-            {
-                UserID = userID;
-                Username = username;
-                Discriminator = discriminator;
-                ChannelID = channelID;
-                MessageID = messageID;
-                Message = message;
-                Timestamp = timestamp;
-                Pinned = pinned;
-                TTS = tts;
-                DidMentionEveryone = mentionEveryone;
-                EditedTimestamp = editTimestamp;
-            }
-        }
 
         public DiscordExplorer()
         {
             InitializeComponent();
 
-            SplitContainer.Paint += PaintHandle;
+            MessagesSplitContainer.Paint += PaintHandle;
+            ProfilesSplitContainer.Paint += PaintHandle;
         }
         
         private void PaintHandle(object sender, PaintEventArgs p)
@@ -75,6 +48,12 @@ namespace DiscordExplorer
                 new DiscordMessage(dummy, "Test User", "0000", dummy, dummy, "Whoops sorry for ping", DateTime.UtcNow.AddSeconds(11), pinned: true),
             };
             MessagesData.AutoResizeColumns();
+
+            ProfilesData.DataSource = new List<DiscordProfile>()
+            {
+                new DiscordProfile(dummy, "Test User", "0000", "TestAvatar"),
+                new DiscordProfile(dummy, "Test User 2", "0000", "TestAvatar", DateTime.UtcNow.AddDays(-100)),
+            };
         }
 
         public void LoadDiscordFiles()
@@ -111,8 +90,7 @@ namespace DiscordExplorer
                 }
 
                 timer.Stop();
-
-                MessageBox.Show(string.Format("Parse Complete!\nParsing took {0} seconds\nData_x files found: {1}\nf_xxxxxx files found: {2}\nOther files found: {3}\nTotal files found: {4}", timer.Elapsed.TotalSeconds.ToString("0.00"), dataFiles, fFiles, files.Length - (fFiles + dataFiles), files.Length), "Parsing Discord Cache", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(string.Format("Parse Complete!\nParsing took {0} seconds\nData_x files found: {1}\nf_xxxxxx files found: {2}\nOther files found: {3}\nTotal files found: {4}", timer.Elapsed.TotalSeconds.ToString("0.000"), dataFiles, fFiles, files.Length - (fFiles + dataFiles), files.Length), "Parsing Discord Cache", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
         }
     }
