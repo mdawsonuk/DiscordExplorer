@@ -5,10 +5,17 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordExplorer", "DiscordExplorer\DiscordExplorer.csproj", "{889551E1-423B-4D0A-A8C9-00BF51B4A775}"
 	ProjectSection(ProjectDependencies) = postProject
+		{6BB6342D-D1B2-4EBA-8B0D-6E00CF4A1848} = {6BB6342D-D1B2-4EBA-8B0D-6E00CF4A1848}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordExplorer.CacheParser", "DiscordExplorer.CacheParser\DiscordExplorer.CacheParser.csproj", "{16E40939-3B79-46A6-B71A-4F14B2F90FCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordExplorer.Common", "DiscordExplorer.Common\DiscordExplorer.Common.csproj", "{6BB6342D-D1B2-4EBA-8B0D-6E00CF4A1848}"
+	ProjectSection(ProjectDependencies) = postProject
 		{16E40939-3B79-46A6-B71A-4F14B2F90FCE} = {16E40939-3B79-46A6-B71A-4F14B2F90FCE}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordExplorer.CacheParser", "DiscordExplorer.CacheParser\DiscordExplorer.CacheParser.csproj", "{16E40939-3B79-46A6-B71A-4F14B2F90FCE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordExplorer.Common.Tests", "DiscordExplorer.Common.Tests\DiscordExplorer.Common.Tests.csproj", "{6A9B4F5C-B633-4320-8475-D703D97D2287}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +31,14 @@ Global
 		{16E40939-3B79-46A6-B71A-4F14B2F90FCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16E40939-3B79-46A6-B71A-4F14B2F90FCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16E40939-3B79-46A6-B71A-4F14B2F90FCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BB6342D-D1B2-4EBA-8B0D-6E00CF4A1848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB6342D-D1B2-4EBA-8B0D-6E00CF4A1848}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB6342D-D1B2-4EBA-8B0D-6E00CF4A1848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB6342D-D1B2-4EBA-8B0D-6E00CF4A1848}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A9B4F5C-B633-4320-8475-D703D97D2287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A9B4F5C-B633-4320-8475-D703D97D2287}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A9B4F5C-B633-4320-8475-D703D97D2287}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A9B4F5C-B633-4320-8475-D703D97D2287}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

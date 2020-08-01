@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace DiscordExplorer
+namespace DiscordExplorer.Common
 {
     public static class DiscordURLWhitelist
     {
@@ -22,6 +22,8 @@ namespace DiscordExplorer
             { "https://discordapp.com/api/v6/channels/*/messages/*/reactions/*", EDiscordExplorerCategory.Messages },
             { "https://discordapp.com/api/v6/channels/*/messages", EDiscordExplorerCategory.Messages },
             { "https://discordapp.com/api/v6/users/*/profile", EDiscordExplorerCategory.Profiles },
+            { "https://discordapp.com/api/v6/users/@me/affinities/guilds", EDiscordExplorerCategory.LocalUser | EDiscordExplorerCategory.Servers},
+            { "https://discordapp.com/api/v6/users/@me/affinities/users", EDiscordExplorerCategory.LocalUser | EDiscordExplorerCategory.Profiles},
             { "https://discordapp.com/api/v6/users/@me/connections", EDiscordExplorerCategory.LocalUser },
             { "https://discordapp.com/api/v6/users/@me/billing/subscriptions", EDiscordExplorerCategory.LocalUser },
             { "https://discordapp.com/api/v6/users/@me/notes/*", EDiscordExplorerCategory.LocalUser | EDiscordExplorerCategory.Profiles},

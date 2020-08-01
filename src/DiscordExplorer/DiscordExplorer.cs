@@ -54,6 +54,7 @@ namespace DiscordExplorer
                 new DiscordProfile(dummy, "Test User", "0000", "TestAvatar"),
                 new DiscordProfile(dummy, "Test User 2", "0000", "TestAvatar", DateTime.UtcNow.AddDays(-100)),
             };
+            ProfilesData.AutoResizeColumns();
         }
 
         public void LoadDiscordFiles()
