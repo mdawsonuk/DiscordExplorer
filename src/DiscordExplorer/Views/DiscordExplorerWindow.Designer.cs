@@ -1,6 +1,6 @@
 ﻿namespace DiscordExplorer
 {
-    partial class DiscordExplorer
+    partial class DiscordExplorerWindow
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiscordExplorer));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiscordExplorerWindow));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,12 +50,12 @@
             this.LocalUser = new System.Windows.Forms.TabPage();
             this.Messages = new System.Windows.Forms.TabPage();
             this.MessagesSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.MessagesData = new System.Windows.Forms.DataGridView();
+            this.MessagesData = new DiscordExplorer.Views.EnhancedDataGridView();
             this.Files = new System.Windows.Forms.TabPage();
             this.Servers = new System.Windows.Forms.TabPage();
             this.Profiles = new System.Windows.Forms.TabPage();
             this.ProfilesSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.ProfilesData = new System.Windows.Forms.DataGridView();
+            this.ProfilesData = new DiscordExplorer.Views.EnhancedDataGridView();
             this.CacheURLs = new System.Windows.Forms.TabPage();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();

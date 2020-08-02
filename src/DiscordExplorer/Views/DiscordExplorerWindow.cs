@@ -5,23 +5,20 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace DiscordExplorer
 {
-    public partial class DiscordExplorer : Form
+    public partial class DiscordExplorerWindow : Form
     {
         private readonly List<DiscordMessage> LoadedMessages = new List<DiscordMessage>();
 
-        public DiscordExplorer()
+        public DiscordExplorerWindow()
         {
             InitializeComponent();
 
             MessagesSplitContainer.Paint += PaintHandle;
             ProfilesSplitContainer.Paint += PaintHandle;
-
-            typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, MessagesData, new object[] { true });
 
             StripStatusLabel.Text = "No cache loaded";
             StripProgressBar.Visible = false;
@@ -145,7 +142,7 @@ namespace DiscordExplorer
             StripProgressBar.Visible = false;
             TabControl.Visible = true;
 
-
+            // TODO: Parse cache with DiscordExplorer.CacheParser
             MockData();
 
             MessagesData.DataSource = LoadedMessages;

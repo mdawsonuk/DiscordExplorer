@@ -18,7 +18,7 @@ namespace DiscordExplorer
                 Application.SetHighDpiMode(HighDpiMode.SystemAware);
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new DiscordExplorer());
+                Application.Run(new DiscordExplorerWindow());
             }
         }
     }
