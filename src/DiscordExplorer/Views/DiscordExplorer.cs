@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace DiscordExplorer
 {
     public partial class DiscordExplorer : Form
     {
+        private readonly List<DiscordMessage> LoadedMessages = new List<DiscordMessage>();
 
         public DiscordExplorer()
         {
@@ -17,6 +20,8 @@ namespace DiscordExplorer
 
             MessagesSplitContainer.Paint += PaintHandle;
             ProfilesSplitContainer.Paint += PaintHandle;
+
+            typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, MessagesData, new object[] { true });
 
             StripStatusLabel.Text = "No cache loaded";
             StripProgressBar.Visible = false;
@@ -67,7 +72,11 @@ namespace DiscordExplorer
 
         private void OnLoadLiveButtonClick(object sender, EventArgs e)
         {
-            MessageBox.Show("The Discord Cache cannot be parsed while Discord is open. Please quit Discord by right clicking on the tray icon and quitting. Press OK once this has been completed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+            if (Process.GetProcessesByName("discord").Any())
+            {
+                MessageBox.Show("The Discord Cache cannot be parsed while Discord is open. Please quit Discord by right clicking on the tray icon and quitting. Press OK once this has been completed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);// Is running
+                return;
+            }
 
             LoadDiscordFiles(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Discord\\Cache\\index"));
         }
@@ -138,19 +147,26 @@ namespace DiscordExplorer
 
 
             MockData();
+
+            MessagesData.DataSource = LoadedMessages;
         }
 
         private void MockData()
         {
             long dummy = 123456789012345678;
-            MessagesData.DataSource = new List<DiscordMessage>()
+            LoadedMessages.Add(new DiscordMessage(dummy, "Test User", "0000", dummy, dummy, "@everyone this is a test Message goes here. It can be a really long message but can also be quite short. Obviously, this one is a bit longer than you might expect.\ud83d\ude26", DateTime.UtcNow, mentionEveryone: true));
+            LoadedMessages.Add(new DiscordMessage(dummy, "Test User 2", "0000", dummy, dummy, "\ud83d\ude04", DateTime.UtcNow.AddSeconds(1)));
+            LoadedMessages.Add(new DiscordMessage(dummy, "Test User 3", "0000", dummy, dummy, "\ud83e\udd1e\ud83c\udffb", DateTime.UtcNow.AddSeconds(2), editTimestamp: DateTime.UtcNow.AddSeconds(7)));
+            LoadedMessages.Add(new DiscordMessage(dummy, "Test User 4", "0000", dummy, dummy, "Reee why the ping", DateTime.UtcNow.AddSeconds(5)));
+            LoadedMessages.Add(new DiscordMessage(dummy, "Test User", "0000", dummy, dummy, "Whoops sorry for ping", DateTime.UtcNow.AddSeconds(11), pinned: true));
+            LoadedMessages.Add(new DiscordMessage(dummy, "Test User", "0000", dummy, dummy, "Data example", DateTime.UtcNow.AddSeconds(30)));
+            Random random = new Random();
+            for (int i = 0; i < 1000; i++)
             {
-                new DiscordMessage(dummy, "Test User", "0000", dummy, dummy, "@everyone this is a test Message goes here. It can be a really long message but can also be quite short. Obviously, this one is a bit longer than you might expect.\ud83d\ude26", DateTime.UtcNow, mentionEveryone: true),
-                new DiscordMessage(dummy, "Test User 2", "0000", dummy, dummy, "\ud83d\ude04", DateTime.UtcNow.AddSeconds(1)),
-                new DiscordMessage(dummy, "Test User 3", "0000", dummy, dummy, "\ud83e\udd1e\ud83c\udffb", DateTime.UtcNow.AddSeconds(2), editTimestamp: DateTime.UtcNow.AddSeconds(7)),
-                new DiscordMessage(dummy, "Test User 4", "0000", dummy, dummy, "Reee why the ping", DateTime.UtcNow.AddSeconds(5)),
-                new DiscordMessage(dummy, "Test User", "0000", dummy, dummy, "Whoops sorry for ping", DateTime.UtcNow.AddSeconds(11), pinned: true),
-            };
+                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                string text = new string(Enumerable.Repeat(chars, 12).Select(s => s[random.Next(s.Length)]).ToArray());
+                LoadedMessages.Add(new DiscordMessage(dummy, "Test User " + random.Next(1, 9), "0000", dummy, dummy, text, DateTime.UtcNow.AddSeconds(30)));
+            }
             MessagesData.AutoResizeColumns();
 
             ProfilesData.DataSource = new List<DiscordProfile>()

@@ -29,6 +29,11 @@ namespace DiscordExplorer.Models
             Avatar = avatar;
             PremiumSince = premium;
         }
+
+        public override string ToString()
+        {
+            return $"{Username}#{Discriminator}";
+        }
     }
 
     public struct MutualGuild

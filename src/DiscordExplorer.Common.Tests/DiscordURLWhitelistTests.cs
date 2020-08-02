@@ -52,6 +52,8 @@ namespace DiscordExplorer.Common
         [TestCase("https://cdn.discordapp.com/icons/123456789012345678/a_01234567890abcdef0123456789abcde.gif?size=256")]
         [TestCase("https://discordapp.com/api/v6/channels/123456789012345678/pins")]
         [TestCase("https://discordapp.com/api/v6/users/@me/affinities/guilds")]
+        [TestCase("https://discordapp.com/api/v6/guilds/123456789012345678/welcome-screen")]
+        [TestCase("https://discordapp.com/api/v6/guilds/123456789012345678/messages/search")]
         public static void ServersUrls(string url)
         {
             Assert.That(DiscordURLWhitelist.GetCategory(new Uri(url)).HasFlag(EDiscordExplorerCategory.Servers), Is.True, "This URL should be a servers type");
@@ -61,6 +63,7 @@ namespace DiscordExplorer.Common
         [TestCase("https://discordapp.com/api/v6/channels/123456789012345678/messages/123456789012345678/reactions/test%F0?limit=100")]
         [TestCase("https://discordapp.com/api/v6/channels/123456789012345678/messages?limit=50&around=123456789012345678")]
         [TestCase("https://discordapp.com/api/v6/channels/123456789012345678/pins")]
+        [TestCase("https://discordapp.com/api/v6/invites/abcdefg?with_counts=true")]
         public static void MessagesUrls(string url)
         {
             Assert.That(DiscordURLWhitelist.GetCategory(new Uri(url)).HasFlag(EDiscordExplorerCategory.Messages), Is.True, "This URL should be a messages type");
