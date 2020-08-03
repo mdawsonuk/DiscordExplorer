@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace DiscordExplorer.Models
 {
     public class DiscordProfile
     {
+        [DisplayName("User ID")]
         public long UserID { get; private set; }
 
         public string Username { get; private set; }
@@ -15,6 +17,7 @@ namespace DiscordExplorer.Models
         /// <summary>
         /// The time since the user has had premium - called Nitro by Discord
         /// </summary>
+        [DisplayName("Premium Since")]
         public DateTime? PremiumSince { get; private set; }
 
         public MutualGuild[] MutualGuilds { get; private set; } = new MutualGuild[0];

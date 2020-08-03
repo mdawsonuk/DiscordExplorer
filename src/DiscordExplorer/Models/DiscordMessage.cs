@@ -10,7 +10,8 @@ namespace DiscordExplorer.Models
         [DisplayName("Channel ID")]
         public long ChannelID { get; set; }
 
-        public long MessageID = 0L;
+        [DisplayName("Message ID")]
+        public long MessageID { get; set; }
 
         public string Message { get; set; }
 
