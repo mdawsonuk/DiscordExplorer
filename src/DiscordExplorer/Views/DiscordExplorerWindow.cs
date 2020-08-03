@@ -1,6 +1,8 @@
 ﻿using DiscordExplorer.Models;
+using Humanizer;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -11,7 +13,7 @@ namespace DiscordExplorer
 {
     public partial class DiscordExplorerWindow : Form
     {
-        private readonly List<DiscordMessage> LoadedMessages = new List<DiscordMessage>();
+        private readonly BindingList<DiscordMessage> LoadedMessages = new BindingList<DiscordMessage>();
 
         public DiscordExplorerWindow()
         {
@@ -165,6 +167,11 @@ namespace DiscordExplorer
                 LoadedMessages.Add(new DiscordMessage(dummy, "Test User " + random.Next(1, 9), "0000", dummy, dummy, text, DateTime.UtcNow.AddSeconds(30)));
             }
             MessagesData.AutoResizeColumns();
+            foreach (DataGridViewColumn column in MessagesData.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.Automatic;
+                column.HeaderText = column.HeaderText.Humanize();
+            }
 
             ProfilesData.DataSource = new List<DiscordProfile>()
             {

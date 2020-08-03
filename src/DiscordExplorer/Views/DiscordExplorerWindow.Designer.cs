@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiscordExplorerWindow));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -113,6 +112,7 @@
             this.LoadLiveCacheMenuItem.Name = "LoadLiveCacheMenuItem";
             this.LoadLiveCacheMenuItem.Size = new System.Drawing.Size(225, 26);
             this.LoadLiveCacheMenuItem.Text = "Load Live Cache";
+            this.LoadLiveCacheMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
             this.LoadLiveCacheMenuItem.Click += new System.EventHandler(this.OnLoadLiveButtonClick);
             // 
             // toolStripSeparator
@@ -266,19 +266,10 @@
             // 
             // MessagesData
             // 
-            this.MessagesData.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.MessagesData.BackgroundColor = System.Drawing.Color.White;
             this.MessagesData.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.MessagesData.VirtualMode = true;
             this.MessagesData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.MessagesData.DefaultCellStyle = dataGridViewCellStyle1;
             this.MessagesData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MessagesData.Location = new System.Drawing.Point(0, 0);
             this.MessagesData.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
