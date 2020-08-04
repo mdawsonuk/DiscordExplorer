@@ -21,10 +21,15 @@ namespace DiscordExplorer.CLI
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed<Options>(o => 
                 {
-                    if (o.Index != "") {
-                        Console.WriteLine($"Current Arguments: -i {o.Index}");
-                        IndexParse.parse(o.Index);
+                    string indexFile = o.Index;
+                    if (string.IsNullOrEmpty(indexFile)) {
+                        indexFile = Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                            "discord\\Cache\\index"
+                        );
                     }
+                    Console.WriteLine($"Current Arguments -> index: {indexFile}");
+                    IndexParse.parse(indexFile);
                 }
             );
         }
