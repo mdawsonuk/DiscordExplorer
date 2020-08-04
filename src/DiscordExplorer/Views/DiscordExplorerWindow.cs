@@ -1,4 +1,5 @@
-﻿using DiscordExplorer.Models;
+﻿using DiscordExplorer.Common;
+using DiscordExplorer.Models;
 using Humanizer;
 using System;
 using System.Collections.Generic;
@@ -71,33 +72,23 @@ namespace DiscordExplorer
 
         private void OnLoadLiveButtonClick(object sender, EventArgs e)
         {
-            if (Process.GetProcessesByName("discord").Any())
+            if (Utils.IsDiscordRunning())
             {
                 MessageBox.Show("The Discord Cache cannot be parsed while Discord is open. Please quit Discord by right clicking on the tray icon and quitting. Press OK once this has been completed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);// Is running
                 return;
             }
 
-            LoadDiscordFiles(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Discord\\Cache\\index"));
+            LoadDiscordFiles(Path.Combine(Config.GetDiscordCacheLocation(), "index"));
         }
 
         private void OnViewGithubClick(object sender, EventArgs e)
         {
-            OpenUrl("https://github.com/mdawsonuk/DiscordExplorer/");
+            Utils.OpenUrl("https://github.com/mdawsonuk/DiscordExplorer/");
         }
 
         private void OnReportBugClick(object sender, EventArgs e)
         {
-            OpenUrl("https://github.com/mdawsonuk/DiscordExplorer/issues/new?labels=bug");
-        }
-
-        private void OpenUrl(string url)
-        {
-            var ps = new ProcessStartInfo(url)
-            {
-                UseShellExecute = true,
-                Verb = "open"
-            };
-            Process.Start(ps);
+            Utils.OpenUrl("https://github.com/mdawsonuk/DiscordExplorer/issues/new?labels=bug");
         }
 
         private void OnAboutButtonClick(object sender, EventArgs e)

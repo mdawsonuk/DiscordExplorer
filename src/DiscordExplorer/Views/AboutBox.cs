@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using DiscordExplorer.Common;
 using System.Windows.Forms;
 
 namespace DiscordExplorer
@@ -11,12 +11,7 @@ namespace DiscordExplorer
 
             textBoxDescription.LinkClicked += (s, e) =>
             {
-                var ps = new ProcessStartInfo(e.LinkText)
-                {
-                    UseShellExecute = true,
-                    Verb = "open"
-                };
-                Process.Start(ps);
+                Utils.OpenUrl(e.LinkText);
             };
         }
     }
