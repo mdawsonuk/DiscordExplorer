@@ -6,7 +6,7 @@
   <h3 align="center">Discord Explorer</h3>
 	
   <p align="center">
-    <a href="LICENCE" alt="Licence">
+    <a href="LICENSE" alt="Licence">
 		<img src="https://img.shields.io/github/license/mdawsonuk/DiscordExplorer?style=flat-square" /></a>
 	<a alt="Releases">
 		<img src="https://img.shields.io/github/v/release/mdawsonuk/DiscordExplorer?include_prereleases&style=flat-square&color=blue" /></a>
@@ -105,13 +105,7 @@ dotnet build DiscordExplorer.sln
 
 Contributions are what makes open source projects such an interesting and fun place to develop. Any contributions you make are **greatly appreciated**.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-Please ensure that there is good test coverage of your new feature.
+For details on contributing, please read the [CONTRIBUTING](.github/CONTRIBUTING.md) documentation
 
 ## License
 
