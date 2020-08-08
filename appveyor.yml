@@ -1,0 +1,46 @@
+version: '0.1.{build}'
+
+image: Visual Studio 2019
+
+clone_depth: 1
+
+configuration: Debug
+
+branches:
+  except:
+    - gh-pages
+
+matrix:
+  fast_finish: true
+
+for:
+  branches:
+    only:
+      - master
+
+  configuration: Release
+
+init:
+  # Good practise, because Windows line endings are different from Unix/Linux ones
+  - cmd: git config --global core.autocrlf true
+
+before_build:
+  # Display .NET Core version
+  - cmd: dotnet --version
+  # Display minimal restore text
+  - cmd: dotnet restore ./src/DiscordExplorer.sln --verbosity m
+
+build_script:
+  # output will be in ./src/DiscordExplorer/bin/debug/netcoreapp1.1/publish
+  - cmd: dotnet publish ./src/DiscordExplorer.sln
+
+artifacts:
+ - path: '\src\DiscordExplorer\bin\Debug\netcoreapp1.1\publish'
+   name: WebSite
+   type: WebDeployPackage
+
+test_script:
+  - cmd: cd tests
+  - cmd: dotnet test ./src/DiscordExplorer.sln
+
+deploy: off
