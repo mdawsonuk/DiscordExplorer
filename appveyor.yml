@@ -28,7 +28,7 @@ build_script:
   - cmd: dotnet publish ./src/DiscordExplorer.sln
 
 artifacts:
- - path: '\src\DiscordExplorer\bin\Debug\netcoreapp1.1\publish'
+ - path: '\src\DiscordExplorer\bin\Release\netcoreapp1.1\publish'
    name: WebSite
    type: WebDeployPackage
 
