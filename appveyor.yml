@@ -33,7 +33,6 @@ artifacts:
    type: WebDeployPackage
 
 test_script:
-  - cmd: cd tests
   - cmd: dotnet test ./src/DiscordExplorer.sln
 
 deploy: off
