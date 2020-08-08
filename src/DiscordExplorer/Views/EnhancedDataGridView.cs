@@ -34,6 +34,9 @@ namespace DiscordExplorer.Views
                 Margin = Padding.Empty,
                 AutoSize = false
             });
+
+            ColumnAdded += (s, e) => visibleColumnsListBox.Height = (visibleColumnsListBox.Items.Count * 16) + 10;
+            ColumnRemoved += (s, e) => visibleColumnsListBox.Height = (visibleColumnsListBox.Items.Count * 16) + 10;
         }
 
         private void OnCellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -45,8 +48,6 @@ namespace DiscordExplorer.Views
                 {
                     visibleColumnsListBox.Items.Add(column.HeaderText, column.Visible);
                 }
-
-                visibleColumnsListBox.Height = (visibleColumnsListBox.Items.Count * 16) + 10;
                 visibleColumnsListBox.Width = 200;
                 visibleColumnsPopup.Show(PointToScreen(new Point(e.X, e.Y)));
             }

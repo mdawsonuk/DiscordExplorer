@@ -10,6 +10,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+using DiscordMessage = DiscordExplorer.Models.DiscordMessage;
+
 namespace DiscordExplorer
 {
     public partial class DiscordExplorerWindow : Form
@@ -19,6 +21,49 @@ namespace DiscordExplorer
         public DiscordExplorerWindow()
         {
             InitializeComponent();
+
+            #region Extra components
+
+            MessagesData = new Views.EnhancedDataGridView()
+            {
+                AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells,
+                BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.None,
+                VirtualMode = true,
+                ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize,
+                Dock = DockStyle.Fill,
+                Location = new Point(0,0),
+                Margin = new Padding(3, 4, 3, 4),
+                Name = "MessagesData",
+                ReadOnly = true,
+                TabIndex = 0,
+            };
+            MessagesSplitContainer.Panel1.Controls.Add(MessagesData);
+
+            ProfilesData = new Views.EnhancedDataGridView()
+            {
+                BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.None,
+                VirtualMode = true,
+                ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize,
+                Dock = DockStyle.Fill,
+                Location = new Point(0, 0),
+                Margin = new Padding(3, 4, 3, 4),
+                Name = "MessagesData",
+                ReadOnly = true,
+                TabIndex = 0,
+            };
+            ProfilesSplitContainer.Panel1.Controls.Add(ProfilesData);
+
+            MessagesDetailsFlowLayout = new Views.StackPanel()
+            {
+                Name = "MessagesDetailsFlowLayout",
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.TopDown,
+            };
+            MessagesSplitContainer.Panel2.Controls.Add(MessagesDetailsFlowLayout);
+
+            #endregion
 
             MessagesSplitContainer.Paint += PaintHandle;
             ProfilesSplitContainer.Paint += PaintHandle;
@@ -36,6 +81,10 @@ namespace DiscordExplorer
                     e.Cancel = true;
                 }
             };
+
+            MessagesDetailsFlowLayout.Controls.Add(new Views.DiscordMessage()
+            {
+            });
         }
         
         private void PaintHandle(object sender, PaintEventArgs p)
