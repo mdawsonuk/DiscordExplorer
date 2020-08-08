@@ -22,8 +22,34 @@ namespace DiscordExplorer
         {
             InitializeComponent();
 
-            #region Extra components
+            InitialiseNonDesignerComponent();
 
+            MessagesSplitContainer.Paint += PaintHandle;
+            ProfilesSplitContainer.Paint += PaintHandle;
+
+            StripStatusLabel.Text = "No cache loaded";
+            StripProgressBar.Visible = false;
+            TabControl.Visible = false;
+
+            FormClosing += (s, e) =>
+            {
+                DialogResult confirmClose = MessageBox.Show("Are you sure you want to exit?", "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (confirmClose == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            };
+
+            MessagesDetailsFlowLayout.Controls.Add(new Views.DiscordMessage()
+            {
+            });
+        }
+
+        #region Extra components
+
+        private void InitialiseNonDesignerComponent()
+        {
             MessagesData = new Views.EnhancedDataGridView()
             {
                 AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells,
@@ -32,7 +58,7 @@ namespace DiscordExplorer
                 VirtualMode = true,
                 ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize,
                 Dock = DockStyle.Fill,
-                Location = new Point(0,0),
+                Location = new Point(0, 0),
                 Margin = new Padding(3, 4, 3, 4),
                 Name = "MessagesData",
                 ReadOnly = true,
@@ -62,31 +88,10 @@ namespace DiscordExplorer
                 FlowDirection = FlowDirection.TopDown,
             };
             MessagesSplitContainer.Panel2.Controls.Add(MessagesDetailsFlowLayout);
-
-            #endregion
-
-            MessagesSplitContainer.Paint += PaintHandle;
-            ProfilesSplitContainer.Paint += PaintHandle;
-
-            StripStatusLabel.Text = "No cache loaded";
-            StripProgressBar.Visible = false;
-            TabControl.Visible = false;
-
-            FormClosing += (s, e) =>
-            {
-                DialogResult confirmClose = MessageBox.Show("Are you sure you want to exit?", "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                if (confirmClose == DialogResult.No)
-                {
-                    e.Cancel = true;
-                }
-            };
-
-            MessagesDetailsFlowLayout.Controls.Add(new Views.DiscordMessage()
-            {
-            });
         }
-        
+
+        #endregion
+
         private void PaintHandle(object sender, PaintEventArgs p)
         {
             if (sender is SplitContainer splitter)
