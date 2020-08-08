@@ -4,7 +4,7 @@ image: Visual Studio 2019
 
 clone_depth: 1
 
-configuration: Debug
+configuration: Release
 
 branches:
   except:
@@ -12,13 +12,6 @@ branches:
 
 matrix:
   fast_finish: true
-
-for:
-  branches:
-    only:
-      - master
-
-  configuration: Release
 
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
