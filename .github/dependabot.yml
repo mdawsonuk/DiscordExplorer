@@ -5,33 +5,33 @@
 
 version: 2
 updates:
-  - package-ecosystem: nuget
-  directory: "/src/DiscordExplorer" # DiscordExplorer.csproj
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-  - package-ecosystem: nuget
-  directory: "/src/DiscordExplorer.Common" # DiscordExplorer.Common.csproj
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-  - package-ecosystem: nuget
-  directory: "/src/DiscordExplorer.CLI" # DiscordExplorer.CLI.csproj
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-  - package-ecosystem: nuget
-  directory: "/src/DiscordExplorer.CacheParser" # DiscordExplorer.CacheParser.csproj
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-  - package-ecosystem: nuget
-  directory: "/src/DiscordExplorer.Common.Tests" # DiscordExplorer.Common.Tests.csproj
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-  - package-ecosystem: nuget
-  directory: "/src/DiscordExplorer.CacheParser.Tests" # DiscordExplorer.CacheParser.Tests.csproj
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
+  - package-ecosystem: "nuget"
+    directory: "/src/DiscordExplorer" # DiscordExplorer.csproj
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "nuget"
+    directory: "/src/DiscordExplorer.Common" # DiscordExplorer.Common.csproj
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "nuget"
+    directory: "/src/DiscordExplorer.CLI" # DiscordExplorer.CLI.csproj
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "nuget"
+    directory: "/src/DiscordExplorer.CacheParser" # DiscordExplorer.CacheParser.csproj
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "nuget"
+    directory: "/src/DiscordExplorer.Common.Tests" # DiscordExplorer.Common.Tests.csproj
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "nuget"
+    directory: "/src/DiscordExplorer.CacheParser.Tests" # DiscordExplorer.CacheParser.Tests.csproj
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
