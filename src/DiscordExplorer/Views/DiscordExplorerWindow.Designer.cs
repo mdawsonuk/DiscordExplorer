@@ -242,7 +242,7 @@ namespace DiscordExplorer
             this.MessagesSplitContainer.Panel1MinSize = 500;
             this.MessagesSplitContainer.Panel2MinSize = 500;
             this.MessagesSplitContainer.Size = new System.Drawing.Size(1296, 626);
-            this.MessagesSplitContainer.SplitterDistance = 898;
+            this.MessagesSplitContainer.SplitterDistance = 1600;
             this.MessagesSplitContainer.SplitterIncrement = 5;
             this.MessagesSplitContainer.SplitterWidth = 20;
             this.MessagesSplitContainer.TabIndex = 0;
