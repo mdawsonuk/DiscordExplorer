@@ -29,69 +29,70 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiscordMessage));
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.Avatar = new System.Windows.Forms.PictureBox();
+            this.Username = new System.Windows.Forms.Label();
+            this.Timestamp = new System.Windows.Forms.Label();
+            this.Message = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.Avatar)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // Avatar
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(20, 20);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(40, 40);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.Avatar.Image = ((System.Drawing.Image)(resources.GetObject("Avatar.Image")));
+            this.Avatar.Location = new System.Drawing.Point(20, 20);
+            this.Avatar.Margin = new System.Windows.Forms.Padding(0);
+            this.Avatar.Name = "Avatar";
+            this.Avatar.Size = new System.Drawing.Size(40, 40);
+            this.Avatar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.Avatar.TabIndex = 0;
+            this.Avatar.TabStop = false;
             // 
-            // label1
+            // Username
             // 
-            this.label1.AutoSize = true;
-            this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(100, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(109, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Discord Username";
+            this.Username.AutoSize = true;
+            this.Username.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Username.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Username.ForeColor = System.Drawing.Color.White;
+            this.Username.Location = new System.Drawing.Point(88, 15);
+            this.Username.Name = "Username";
+            this.Username.Size = new System.Drawing.Size(78, 21);
+            this.Username.TabIndex = 1;
+            this.Username.Text = "Test User";
             // 
-            // label2
+            // Timestamp
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(118)))), ((int)(((byte)(125)))));
-            this.label2.Location = new System.Drawing.Point(215, 20);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(114, 15);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Discord Timestamp";
+            this.Timestamp.AutoSize = true;
+            this.Timestamp.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Timestamp.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(118)))), ((int)(((byte)(125)))));
+            this.Timestamp.Location = new System.Drawing.Point(184, 20);
+            this.Timestamp.Name = "Timestamp";
+            this.Timestamp.Size = new System.Drawing.Size(81, 15);
+            this.Timestamp.TabIndex = 1;
+            this.Timestamp.Text = "Today at 00:00";
             // 
-            // label3
+            // Message
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(221)))), ((int)(((byte)(222)))));
-            this.label3.Location = new System.Drawing.Point(100, 45);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(100, 15);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Discord Message";
+            this.Message.AutoSize = true;
+            this.Message.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Message.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(221)))), ((int)(((byte)(222)))));
+            this.Message.Location = new System.Drawing.Point(88, 41);
+            this.Message.Name = "Message";
+            this.Message.Size = new System.Drawing.Size(162, 21);
+            this.Message.TabIndex = 1;
+            this.Message.Text = "This is a test message.";
             // 
             // DiscordMessage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.Message);
+            this.Controls.Add(this.Timestamp);
+            this.Controls.Add(this.Username);
+            this.Controls.Add(this.Avatar);
             this.Name = "DiscordMessage";
             this.Size = new System.Drawing.Size(450, 150);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Avatar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -99,9 +100,9 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox Avatar;
+        private System.Windows.Forms.Label Username;
+        private System.Windows.Forms.Label Timestamp;
+        private System.Windows.Forms.Label Message;
     }
 }
