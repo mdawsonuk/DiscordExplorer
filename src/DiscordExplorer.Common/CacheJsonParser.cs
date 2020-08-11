@@ -8,7 +8,7 @@ namespace DiscordExplorer.Common
     {
         public static List<DiscordMessage> Messages = new List<DiscordMessage>();
 
-        public static List<DiscordUser> Users = new List<DiscordUser>();
+        public static List<DiscordProfile> Users = new List<DiscordProfile>();
 
         public void Parse(string json, string url)
         {

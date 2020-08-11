@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DiscordExplorer.Common.Types
 {
-    public class DiscordMessage
+    public sealed class DiscordMessage
     {
         public long ID { get; private set; }
 
@@ -13,29 +14,34 @@ namespace DiscordExplorer.Common.Types
 
         public long UserID { get; private set; }
 
-        public DiscordUser User
+        public DiscordProfile User
         {
             get
             {
-                if (CacheJsonParser.Users.Any(u => u.UserID == UserID))
-                {
-                    return CacheJsonParser.Users.First(u => u.UserID == UserID);
-                }
-                return null;
+                return CacheJsonParser.Users.FirstOrDefault(u => u.UserID == UserID);
             }
         }
 
         public DiscordMessage(string json)
         {
+            JObject message = JObject.Parse(json);
+            ID = message["id"].ToObject<long>();
+            ChannelID = message["channel_id"].ToObject<long>();
+            UserID = message["author"]["id"].ToObject<long>();
+            Message = message["content"].ToString();
+        }
+
+        public static List<DiscordMessage> ParseMessages(string json)
+        {
+            List<DiscordMessage> discordMessages = new List<DiscordMessage>();
             JArray messages = JArray.Parse(json);
 
             foreach (var message in messages)
             {
-                ID = message["id"].ToObject<long>();
-                ChannelID = message["channel_id"].ToObject<long>();
-                UserID = message["author"]["id"].ToObject<long>();
-                Message = message["content"].ToString();
+                discordMessages.Add(new DiscordMessage(message.ToString()));
             }
+
+            return discordMessages;
         }
     }
 }
