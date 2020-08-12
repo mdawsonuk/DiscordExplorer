@@ -6,7 +6,6 @@ namespace DiscordExplorer.Common.Types
     [TestOf(typeof(DiscordMessage))]
     public static class DiscordProfileTests
     {
-        //[Test(Author = "mdawsonuk")]
         [TestCase("{\"user\": {\"id\": \"1\", \"username\": \"Test\", \"avatar\": \"00\", \"discriminator\": \"1234\", \"public_flags\": 640, \"flags\": 640}, \"mutual_guilds\": [], \"connected_accounts\": [], \"premium_since\": null, \"premium_guild_since\": null}",
             1L, "Test", "00", "1234", Author = "mdawsonuk")]
         [TestCase("{\"author\": {\"id\": \"1\", \"username\": \"Test User\", \"avatar\": \"f000\", \"discriminator\": \"1234\", \"public_flags\": 128}}",
@@ -32,6 +31,7 @@ namespace DiscordExplorer.Common.Types
         }
 
         [TestCase("{\"type\": \"twitter\", \"id\": \"123456789012345678\", \"name\": \"TestTwitterUser\", \"verified\": true}", DiscordProfile.EConnectionType.Twitter, "123456789012345678", "TestTwitterUser", true, Author = "mdawsonuk")]
+        [TestCase("{\"type\": \"reddit\", \"id\": \"123456789012345678\", \"name\": \"TestRedditUser\", \"verified\": false}", DiscordProfile.EConnectionType.Reddit, "123456789012345678", "TestRedditUser", false, Author = "mdawsonuk")]
         public static void ParseJsonConnection(string json, DiscordProfile.EConnectionType type, string id, string name, bool verified)
         {
             DiscordProfile.DiscordConnection connection = new DiscordProfile.DiscordConnection(json);
@@ -44,6 +44,8 @@ namespace DiscordExplorer.Common.Types
 
         [TestCase("{\"type\": \"twitter\", \"id\": \"123456789012345678\", \"name\": \"TestTwitterUser\", \"verified\": true}", "https://twitter.com/TestTwitterUser", Author = "mdawsonuk")]
         [TestCase("{\"type\": \"spotify\", \"id\": \"testspotifyuser\", \"name\": \"Test Spotify User\", \"verified\": true}", "https://open.spotify.com/user/testspotifyuser", Author = "mdawsonuk")]
+        [TestCase("{\"type\": \"steam\", \"id\": \"123456789012345678\", \"name\": \"Test Steam User\", \"verified\": true}", "https://steamcommunity.com/profiles/123456789012345678", Author = "mdawsonuk")]
+        [TestCase("{\"type\": \"reddit\", \"id\": \"abc1234\", \"name\": \"TestRedditUser\", \"verified\": true}", "https://reddit.com/user/TestRedditUser", Author = "mdawsonuk")]
         public static void GetConnectionUrl(string json, string url)
         {
             DiscordProfile.DiscordConnection connection = new DiscordProfile.DiscordConnection(json);

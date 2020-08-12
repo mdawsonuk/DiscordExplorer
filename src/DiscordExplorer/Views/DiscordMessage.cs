@@ -11,6 +11,8 @@ namespace DiscordExplorer.Views
     {
         private readonly PrivateFontCollection pfc = new PrivateFontCollection();
 
+        private readonly Color MentionedColour = Color.FromArgb(13, 250, 166, 26);
+
         public DiscordMessage(Models.DiscordMessage message)
         {
             InitializeComponent();
@@ -36,6 +38,13 @@ namespace DiscordExplorer.Views
                 Timestamp.Text = "(Edited)";
             }
             Message.Text = message.Message;
+
+            if (message.DidMentionEveryone)
+            {
+                MentionedOverlay.BackColor = MentionedColour;
+                MentionedOverlay.Visible = true;
+                PingBar.Visible = true;
+            }
         }
 
         private static byte[] GetFontResourceBytes(Assembly assembly, string fontResourceName)
