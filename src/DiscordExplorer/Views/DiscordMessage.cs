@@ -13,6 +13,12 @@ namespace DiscordExplorer.Views
 
         private readonly Color MentionedColour = Color.FromArgb(13, 250, 166, 26);
 
+        private const int GROUP_START_MESSAGE_HEIGHT = 48;
+
+        private const int CONTINUED_GROUP_MESSAGE_HEIGHT = 26;
+
+        private const int EMOJI_ADDITIONAL_HEIGHT = 24;
+
         public DiscordMessage(Models.DiscordMessage message)
         {
             InitializeComponent();
@@ -35,7 +41,7 @@ namespace DiscordExplorer.Views
             Timestamp.Text = message.Timestamp.Humanize();
             if (message.EditedTimestamp != null)
             {
-                Timestamp.Text = "(Edited)";
+                Timestamp.Text += " (Edited)";
             }
             Message.Text = message.Message;
 

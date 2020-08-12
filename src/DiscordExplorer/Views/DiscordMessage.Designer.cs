@@ -42,7 +42,7 @@
             // Avatar
             // 
             this.Avatar.Image = ((System.Drawing.Image)(resources.GetObject("Avatar.Image")));
-            this.Avatar.Location = new System.Drawing.Point(20, 20);
+            this.Avatar.Location = new System.Drawing.Point(16, 4);
             this.Avatar.Margin = new System.Windows.Forms.Padding(0);
             this.Avatar.Name = "Avatar";
             this.Avatar.Size = new System.Drawing.Size(40, 40);
@@ -56,7 +56,7 @@
             this.Username.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Username.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.Username.ForeColor = System.Drawing.Color.White;
-            this.Username.Location = new System.Drawing.Point(88, 15);
+            this.Username.Location = new System.Drawing.Point(88, 2);
             this.Username.Name = "Username";
             this.Username.Size = new System.Drawing.Size(78, 21);
             this.Username.TabIndex = 1;
@@ -67,7 +67,7 @@
             this.Timestamp.AutoSize = true;
             this.Timestamp.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Timestamp.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(118)))), ((int)(((byte)(125)))));
-            this.Timestamp.Location = new System.Drawing.Point(192, 19);
+            this.Timestamp.Location = new System.Drawing.Point(192, 6);
             this.Timestamp.Name = "Timestamp";
             this.Timestamp.Size = new System.Drawing.Size(81, 15);
             this.Timestamp.TabIndex = 1;
@@ -78,7 +78,7 @@
             this.Message.AutoSize = true;
             this.Message.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Message.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(221)))), ((int)(((byte)(222)))));
-            this.Message.Location = new System.Drawing.Point(88, 41);
+            this.Message.Location = new System.Drawing.Point(88, 24);
             this.Message.Name = "Message";
             this.Message.Size = new System.Drawing.Size(162, 21);
             this.Message.TabIndex = 1;
@@ -91,7 +91,7 @@
             this.MentionedOverlay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MentionedOverlay.Location = new System.Drawing.Point(0, 0);
             this.MentionedOverlay.Name = "MentionedOverlay";
-            this.MentionedOverlay.Size = new System.Drawing.Size(450, 75);
+            this.MentionedOverlay.Size = new System.Drawing.Size(450, 48);
             this.MentionedOverlay.TabIndex = 2;
             this.MentionedOverlay.Visible = false;
             // 
@@ -102,7 +102,7 @@
             this.PingBar.Location = new System.Drawing.Point(0, 0);
             this.PingBar.Margin = new System.Windows.Forms.Padding(0);
             this.PingBar.Name = "PingBar";
-            this.PingBar.Size = new System.Drawing.Size(3, 75);
+            this.PingBar.Size = new System.Drawing.Size(3, 48);
             this.PingBar.TabIndex = 0;
             this.PingBar.Visible = false;
             // 
@@ -118,7 +118,7 @@
             this.Controls.Add(this.MentionedOverlay);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "DiscordMessage";
-            this.Size = new System.Drawing.Size(450, 75);
+            this.Size = new System.Drawing.Size(450, 48);
             ((System.ComponentModel.ISupportInitialize)(this.Avatar)).EndInit();
             this.MentionedOverlay.ResumeLayout(false);
             this.ResumeLayout(false);
