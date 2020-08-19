@@ -7,11 +7,14 @@ namespace DiscordExplorer.CLI
 {
     public class Options
     {
-        [Option('i', "index",
+        [
+            Option(
+                'd', "cache_dir",
                 Required = false,
-                HelpText = "Specify the index file to use"
-        )]
-        public string Index { get; set; }
+                HelpText = "Specify the directory of the cache files"
+            )
+        ]
+        public string CacheDir { get; set; }
     }
 
     class Program
@@ -21,15 +24,29 @@ namespace DiscordExplorer.CLI
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed<Options>(o => 
                 {
-                    string indexFile = o.Index;
-                    if (string.IsNullOrEmpty(indexFile)) {
-                        indexFile = Path.Combine(
+                    // handle the cache directory 
+                    // try to use the local discord one if one isn't provided
+                    string cacheDir = o.CacheDir;
+                    if (string.IsNullOrEmpty(cacheDir))
+                    {
+                        // This should be the path to the main discord cache
+                        cacheDir = Path.Combine(
                             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                            "discord\\Cache\\index"
+                            "discord", "Cache"
                         );
                     }
-                    Console.WriteLine($"Current Arguments -> index: {indexFile}");
-                    IndexParse.parse(indexFile);
+                    else if (!Path.IsPathRooted(cacheDir))
+                    {
+                        // Treat the path as a relative path
+                        cacheDir = Path.Combine(
+                            Directory.GetCurrentDirectory(),
+                            cacheDir
+                        );
+                    }
+
+                    // Basic logging while developing
+                    Console.WriteLine($"Current Arguments -> CacheDir: {cacheDir}");
+                    CacheParse.parse(cacheDir);
                 }
             );
         }
