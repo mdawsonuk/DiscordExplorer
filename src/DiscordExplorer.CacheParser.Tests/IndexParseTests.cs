@@ -20,7 +20,7 @@ namespace DiscordExplorer.CacheParser
         {
             using (StreamWriter writer = new StreamWriter("test_index"))
             {
-				for (int i = 0; i < 524656; i++) {
+				for (int i = 0; i < 1000000; i++) {
 					// Incorrect file header
 					writer.Write(0x00);
 				}
