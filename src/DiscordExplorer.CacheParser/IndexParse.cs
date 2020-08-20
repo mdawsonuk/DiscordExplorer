@@ -14,19 +14,19 @@ namespace DiscordExplorer.CacheParser
         [StructLayout(LayoutKind.Sequential)]
         internal struct LruData
         {
-            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
             internal Int32[]  pad1;
             internal Int32       filled;          // Flag to tell when we filled the cache.
-            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 5)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
             internal Int32[]     sizes;
-            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 5)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
             internal CacheAddr[] heads;
-            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 5)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
             internal CacheAddr[] tails;
             internal CacheAddr   transaction;     // In-flight operation target.
             internal Int32       operation;       // Actual in-flight operation.
             internal Int32       operation_list;  // In-flight operation list.
-            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 7)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 7)]
             internal Int32[]     pad2;
         };
 
@@ -45,7 +45,7 @@ namespace DiscordExplorer.CacheParser
             internal Int32       experiment;   // Id of an ongoing test.
             internal UInt64      create_time;  // Creation time for this set of files
             
-            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 52)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 52)]
             internal Int32[]     pad;          // pad out to 256 bytes
             internal LruData     lru;          // Eviction control data.
         }; 
