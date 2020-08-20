@@ -53,5 +53,32 @@ namespace DiscordExplorer.Common
                 }
             }
         }
+
+        /// <summary>
+        /// Write the array of profiles to a CSV file
+        /// </summary>
+        /// <param name="directory">The directory to export to</param>
+        /// <param name="profiles">The Discord Profiles to write to file</param>
+        /// <exception cref="DirectoryNotFoundException"/>
+        /// <exception cref="ArgumentException"/>
+        public static void WriteProfiles(string directory, List<DiscordProfile> profiles)
+        {
+            if (profiles == null)
+            {
+                throw new ArgumentNullException("Profiles cannot be null");
+            }
+            if (!Directory.Exists(directory))
+            {
+                throw new DirectoryNotFoundException($"Directory {directory} doesn't exist");
+            }
+
+            using (var writer = new StreamWriter(Path.Combine(directory, "profiles.csv")))
+            {
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(profiles);
+                }
+            }
+        }
     }
 }
