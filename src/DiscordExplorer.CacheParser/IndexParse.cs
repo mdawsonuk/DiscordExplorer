@@ -63,6 +63,13 @@ namespace DiscordExplorer.CacheParser
 
             return theStructure;
         }
+	
+	public static DateTime ConvertWebkitTime(ulong timestamp)
+	{
+		TimeSpan time = TimeSpan.FromMilliseconds((double)(timestamp/1000));
+		DateTime date = new DateTime(1601, 1, 1) + time;
+		return date;
+	}
 
         public static void parse(string indexFile)
         {
@@ -99,7 +106,7 @@ namespace DiscordExplorer.CacheParser
                 Console.WriteLine($"table_len:   {index.table_len}");
                 Console.WriteLine($"crash:       {index.crash}");
                 Console.WriteLine($"experiment:  {index.experiment}");
-                Console.WriteLine($"create_time: {index.create_time}");
+                Console.WriteLine($"create_time: {ConvertWebkitTime(index.create_time).ToString(System.Globalization.CultureInfo.InvariantCulture)}");
                 // lru data
                 Console.WriteLine($"lru.filled: {index.lru.filled}");
                 Console.WriteLine("lru.sizes:");
@@ -117,6 +124,7 @@ namespace DiscordExplorer.CacheParser
                 Console.WriteLine($"lru.transaction: {index.lru.transaction}");
                 Console.WriteLine($"lru.operation: {index.lru.operation}");
                 Console.WriteLine($"lru.operation_list: {index.lru.operation_list}");
+
             }
         }
     }
