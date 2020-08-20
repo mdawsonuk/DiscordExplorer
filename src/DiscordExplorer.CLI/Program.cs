@@ -53,13 +53,6 @@ namespace DiscordExplorer.CLI
                         );
                     }
 
-					string outDir = o.OutDir;
-					if (!string.IsNullOrEmpty(o.OutDir) && !Directory.Exists(outDir)) {
-						Console.WriteLine($"{0} is not a valid directory\n", outDir);
-						return;
-					}
-
-
                     // Basic logging while developing
                     Console.WriteLine($"Current Arguments -> CacheDir: {cacheDir}");
                     CacheParse.parse(cacheDir);
