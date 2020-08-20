@@ -67,7 +67,6 @@ namespace DiscordExplorer.Common
         }
 
         [TestCase("https://api.spotify.com/v1/me", Author = "mdawsonuk")]
-        [TestCase("https://best.discord.media/region", Author = "mdawsonuk")]
         [TestCase("https://cdn.discordapp.com/app-assets/", Author = "mdawsonuk")]
         [TestCase("https://discordapp.com/assets/", Author = "mdawsonuk")]
         [TestCase("https://i.scdn.co/image/", Author = "mdawsonuk")]
