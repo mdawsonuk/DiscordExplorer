@@ -15,15 +15,6 @@ namespace DiscordExplorer.CLI
             )
         ]
         public string CacheDir { get; set; }
-
-        [
-            Option(
-                'o', "output_dir",
-                Required = false,
-                HelpText = "Specify the directory of the output files"
-            )
-        ]
-        public string OutDir { get; set; }
     }
 
     class Program
