@@ -14,8 +14,7 @@ namespace DiscordExplorer.CacheParser
             Assert.That(() => IndexParse.parse("invalid_file"), Throws.InstanceOf<FileNotFoundException>());
         }
 
-        [Test(Author = "mdawsonuk")]
-		[Test(Author = "saiputravu")]
+        [Test(Author = "saiputravu")]
         public static void ParseInvalidFile()
         {
             using (StreamWriter writer = new StreamWriter("test_index"))
