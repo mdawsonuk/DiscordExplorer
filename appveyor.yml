@@ -29,7 +29,7 @@ build_script:
 
 artifacts:
  - path: '\src\DiscordExplorer\bin\Release\netcoreapp3.1\publish'
-   name: WebSite
+   name: DiscordExplorer
    type: WebDeployPackage
 
 test_script:
