@@ -8,6 +8,10 @@ namespace DiscordExplorer.Common
     {
         private static readonly Dictionary<string, EDiscordExplorerCategory> UrlCategories = new Dictionary<string, EDiscordExplorerCategory>()
         {
+            #region best.discord.media
+            { "https://best.discord.media/region", EDiscordExplorerCategory.LocalUser },
+            #endregion
+
             #region cdn.discordapp.com
             { "https://cdn.discordapp.com/emojis/*.png", EDiscordExplorerCategory.Files },
             { "https://cdn.discordapp.com/emojis/*.gif", EDiscordExplorerCategory.Files },
@@ -30,6 +34,7 @@ namespace DiscordExplorer.Common
             { "https://discordapp.com/api/v6/users/@me/affinities/guilds", EDiscordExplorerCategory.LocalUser | EDiscordExplorerCategory.Servers},
             { "https://discordapp.com/api/v6/users/@me/affinities/users", EDiscordExplorerCategory.LocalUser | EDiscordExplorerCategory.Profiles},
             { "https://discordapp.com/api/v6/users/@me/connections", EDiscordExplorerCategory.LocalUser },
+            { "https://discordapp.com/api/v6/users/@me/billing/payment-sources", EDiscordExplorerCategory.LocalUser },
             { "https://discordapp.com/api/v6/users/@me/billing/subscriptions", EDiscordExplorerCategory.LocalUser },
             { "https://discordapp.com/api/v6/users/@me/notes/*", EDiscordExplorerCategory.LocalUser | EDiscordExplorerCategory.Profiles},
             #endregion

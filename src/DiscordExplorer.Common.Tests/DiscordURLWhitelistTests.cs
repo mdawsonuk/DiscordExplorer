@@ -28,6 +28,8 @@ namespace DiscordExplorer.Common
         [TestCase("https://discordapp.com/api/v6/users/@me/notes/123456789012345678", Author = "mdawsonuk")]
         [TestCase("https://discordapp.com/api/v6/users/@me/affinities/guilds", Author = "mdawsonuk")]
         [TestCase("https://discordapp.com/api/v6/users/@me/affinities/users", Author = "mdawsonuk")]
+        [TestCase("https://best.discord.media/region", Author = "mdawsonuk")]
+        [TestCase("https://discordapp.com/api/v6/users/@me/billing/payment-sources", Author = "mdawsonuk")]
         public static void LocalUserUrls(string url)
         {
             Assert.That(DiscordURLWhitelist.GetCategory(new Uri(url)).HasFlag(EDiscordExplorerCategory.LocalUser), Is.True, "This URL should be a local user type");
