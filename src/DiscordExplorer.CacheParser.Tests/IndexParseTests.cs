@@ -15,12 +15,15 @@ namespace DiscordExplorer.CacheParser
         }
 
         [Test(Author = "mdawsonuk")]
+		[Test(Author = "saiputravu")]
         public static void ParseInvalidFile()
         {
             using (StreamWriter writer = new StreamWriter("test_index"))
             {
-                // Incorrect file header
-                writer.Write(0xC103CAC4);
+				for (int i = 0; i < 524656; i++) {
+					// Incorrect file header
+					writer.Write(0x00);
+				}
             }
             Assert.That(() => IndexParse.parse("test_index"), Throws.InstanceOf<FileFormatException>());
 
