@@ -30,7 +30,7 @@ namespace DiscordExplorer.CacheParser
 
                 // debug output
                 Console.WriteLine($"magic:       0x{index.header.magic:x}");
-                Console.WriteLine($"version:     {index.header.version / 10000}.{(index.header.version / 100) % 100}.{index.header.version % 100}");
+                Console.WriteLine($"version:     {index.header.version >> 48}.{index.header.version & 0xffff}");
                 Console.WriteLine($"num_entries: {index.header.num_entries}");
                 Console.WriteLine($"num_bytes:   {index.header.num_bytes / (1_000_000)}Mb");
                 Console.WriteLine($"last_file:   {index.header.last_file}");
@@ -68,10 +68,17 @@ namespace DiscordExplorer.CacheParser
 					if (addr != 0)
 						index.table.Add(addr);
 				}
+				UInt32 maxval = 0;
+				for (int i = 0; i < index.table.Count; i++) {
+					maxval = Math.Max(maxval, index.table[i]);
+				}
 				Console.WriteLine($"Cache Addresses [{index.table.Count} valid]:");
 				Console.WriteLine($"\tindex.table[0]:\t\t0x{index.table[0]:x}");
 				Console.WriteLine("\t...");
 				Console.WriteLine($"\tindex.table[{index.table.Count-1}]:\t0x{index.table[index.table.Count-1]:x}");
+				Console.WriteLine($"\tMax(index.table): \t0x{maxval:x}");
+
+
             }
         }
     }
