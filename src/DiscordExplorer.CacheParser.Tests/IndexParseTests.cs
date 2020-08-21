@@ -5,7 +5,7 @@ using System.IO;
 namespace DiscordExplorer.CacheParser
 {
     [TestFixture]
-    // [TestOf(typeof(IndexParse))]
+    [TestOf(typeof(IndexParse))]
     public static class IndexParseTests
     {
         [Test(Author = "mdawsonuk")]
