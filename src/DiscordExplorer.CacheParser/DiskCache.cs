@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace DiscordExplorer.CacheParser
 {
@@ -9,6 +10,7 @@ namespace DiscordExplorer.CacheParser
 	 */
 
     using CacheAddr = UInt32;
+
     internal class DiskCache
     {
 
@@ -67,8 +69,17 @@ namespace DiscordExplorer.CacheParser
 
 		internal struct Index
 		{
-			internal IndexHeader	header;
-			internal CacheAddr[]	table;			
+			internal IndexHeader		header;
+			internal List<CacheAddr>	table;			
+
+			// <summary>
+			// Struct constructor. 
+			// </summary>
+			internal Index(IndexHeader header, List<CacheAddr> table)
+			{
+				this.header = header;
+				this.table = table;
+			}
 		};
 
 		[StructLayout(LayoutKind.Sequential)]

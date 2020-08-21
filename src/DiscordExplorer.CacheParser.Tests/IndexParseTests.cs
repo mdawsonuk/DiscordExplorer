@@ -5,13 +5,13 @@ using System.IO;
 namespace DiscordExplorer.CacheParser
 {
     [TestFixture]
-    [TestOf(typeof(IndexParse))]
+    // [TestOf(typeof(IndexParse))]
     public static class IndexParseTests
     {
         [Test(Author = "mdawsonuk")]
         public static void ParseNonExistingFile()
         {
-            Assert.That(() => IndexParse.parse("invalid_file"), Throws.InstanceOf<FileNotFoundException>());
+			Assert.That(() => IndexParse.parse("invalid_file"), Throws.InstanceOf<FileNotFoundException>());
         }
 
         [Test(Author = "saiputravu")]
@@ -24,7 +24,7 @@ namespace DiscordExplorer.CacheParser
 					writer.Write(0x00);
 				}
             }
-            Assert.That(() => IndexParse.parse("test_index"), Throws.InstanceOf<FileFormatException>());
+        	Assert.That(() => IndexParse.parse("test_index"), Throws.InstanceOf<FileFormatException>());
 
             File.Delete("test_index");
         }
@@ -35,8 +35,8 @@ namespace DiscordExplorer.CacheParser
         {
             // Get the target time from the number of ticks
             DateTime targetTime = new DateTime(ticks);
-            // Assert that the converted DateTime is equal to the target time
-            Assert.That(IndexParse.ConvertWebkitTime((ulong)time), Is.EqualTo(targetTime));
+        	// Assert that the converted DateTime is equal to the target time
+        	Assert.That(Util.ConvertWebkitTime((ulong)time), Is.EqualTo(targetTime));
         }
     }
 }

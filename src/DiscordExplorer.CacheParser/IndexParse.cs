@@ -18,61 +18,60 @@ namespace DiscordExplorer.CacheParser
             }
 
             /* parse the index file */
-            //var index = new disk_cache.IndexHeader();
             using (BinaryReader br = new BinaryReader(File.Open(indexFile, FileMode.Open, FileAccess.Read)))
             {
-                var indexHeader = Util.ByteToType<DiskCache.IndexHeader>(br);
+				DiskCache.Index index = new DiskCache.Index(new DiskCache.IndexHeader(), new List<CacheAddr>());
+                index.header = Util.ByteToType<DiskCache.IndexHeader>(br);
 
-                if (indexHeader.magic != DiskCache.kIndexMagic)
+                if (index.header.magic != DiskCache.kIndexMagic)
                 {
                     throw new FileFormatException($"Index file parse failed - Invalid Magic Number");
                 }
 
                 // debug output
-                Console.WriteLine($"magic:       0x{indexHeader.magic:x}");
-                Console.WriteLine($"version:     {indexHeader.version / 10000}.{(indexHeader.version / 100) % 100}.{indexHeader.version % 100}");
-                Console.WriteLine($"num_entries: {indexHeader.num_entries}");
-                Console.WriteLine($"num_bytes:   {indexHeader.num_bytes / (1_000_000)}Mb");
-                Console.WriteLine($"last_file:   {indexHeader.last_file}");
-                Console.WriteLine($"this_id:     {indexHeader.this_id}");
-                Console.WriteLine($"stats:       {indexHeader.stats}");
-                Console.WriteLine($"table_len:   {indexHeader.table_len}");
-                Console.WriteLine($"crash:       {indexHeader.crash}");
-                Console.WriteLine($"experiment:  {indexHeader.experiment}");
-                Console.WriteLine($"create_time: {Util.ConvertWebkitTime(indexHeader.create_time).ToString(System.Globalization.CultureInfo.InvariantCulture)}");
+                Console.WriteLine($"magic:       0x{index.header.magic:x}");
+                Console.WriteLine($"version:     {index.header.version / 10000}.{(index.header.version / 100) % 100}.{index.header.version % 100}");
+                Console.WriteLine($"num_entries: {index.header.num_entries}");
+                Console.WriteLine($"num_bytes:   {index.header.num_bytes / (1_000_000)}Mb");
+                Console.WriteLine($"last_file:   {index.header.last_file}");
+                Console.WriteLine($"this_id:     {index.header.this_id}");
+                Console.WriteLine($"stats:       {index.header.stats}");
+                Console.WriteLine($"table_len:   {index.header.table_len}");
+                Console.WriteLine($"crash:       {index.header.crash}");
+                Console.WriteLine($"experiment:  {index.header.experiment}");
+                Console.WriteLine($"create_time: {Util.ConvertWebkitTime(index.header.create_time).ToString(System.Globalization.CultureInfo.InvariantCulture)}");
 
 				
                 // lru data
                 Console.WriteLine();
-				Console.WriteLine($"lru.filled: {indexHeader.lru.filled}");
+				Console.WriteLine($"lru.filled: {index.header.lru.filled}");
                 Console.WriteLine("lru.sizes:");
                 for (int i = 0; i < 5; i++) {
-                    Console.WriteLine($"\tlru.sizes[{i}]: 0x{indexHeader.lru.sizes[i]:x}");
+                    Console.WriteLine($"\tlru.sizes[{i}]: 0x{index.header.lru.sizes[i]:x}");
                 }
                 Console.WriteLine("lru.heads:");
                 for (int i = 0; i < 5; i++) {
-                    Console.WriteLine($"\tlru.heads[{i}]: 0x{indexHeader.lru.heads[i]:x}");
+                    Console.WriteLine($"\tlru.heads[{i}]: 0x{index.header.lru.heads[i]:x}");
                 }
                 Console.WriteLine("lru.tails:");
                 for (int i = 0; i < 5; i++) {
-                    Console.WriteLine($"\tlru.tails[{i}]: 0x{indexHeader.lru.tails[i]:x}");
+                    Console.WriteLine($"\tlru.tails[{i}]: 0x{index.header.lru.tails[i]:x}");
                 }
-                Console.WriteLine($"lru.transaction: {indexHeader.lru.transaction}");
-                Console.WriteLine($"lru.operation: {indexHeader.lru.operation}");
-                Console.WriteLine($"lru.operation_list: {indexHeader.lru.operation_list}");
+                Console.WriteLine($"lru.transaction: {index.header.lru.transaction}");
+                Console.WriteLine($"lru.operation: {index.header.lru.operation}");
+                Console.WriteLine($"lru.operation_list: {index.header.lru.operation_list}");
 				
 				// Cache Addresses
 				Console.WriteLine();
-				List<CacheAddr> valid_addresses = new List<CacheAddr>();
-				for (int i = 0; i < indexHeader.table_len; i++) {
+				for (int i = 0; i < index.header.table_len; i++) {
                     CacheAddr addr = br.ReadUInt32();
 					if (addr != 0)
-						valid_addresses.Add(addr);
+						index.table.Add(addr);
 				}
-				Console.WriteLine($"Cache Addresses [{valid_addresses.Count} valid]:");
-				Console.WriteLine($"\tvalid_addresses[0]:\t0x{valid_addresses[0]:x}");
+				Console.WriteLine($"Cache Addresses [{index.table.Count} valid]:");
+				Console.WriteLine($"\tindex.table[0]:\t\t0x{index.table[0]:x}");
 				Console.WriteLine("\t...");
-				Console.WriteLine($"\tvalid_addresses[{valid_addresses.Count-1}]:\t0x{valid_addresses[valid_addresses.Count-1]:x}");
+				Console.WriteLine($"\tindex.table[{index.table.Count-1}]:\t0x{index.table[index.table.Count-1]:x}");
             }
         }
     }
