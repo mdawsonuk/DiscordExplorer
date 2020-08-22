@@ -26,5 +26,25 @@ namespace DiscordExplorer.Common
             }
             throw new NotImplementedException("The current platform is not currently supported");
         }
+        /// <summary>
+        /// Get the Discord LevelDB location for this platform
+        /// </summary>
+        /// <returns>Path to the Discord LevelDB location</returns>
+        public static string GetDiscordLevelDBLocation()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Path.Combine("discord", Path.Combine("Local Storage", "leveldb")));
+            }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), Path.Combine(Path.Combine("library", "Application support"), Path.Combine("discord", Path.Combine("Local Storage", "leveldb"))));
+            }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Path.Combine("discord", Path.Combine("Local Storage", "leveldb")));
+            }
+            throw new NotImplementedException("The current platform is not currently supported");
+        }
     }
 }

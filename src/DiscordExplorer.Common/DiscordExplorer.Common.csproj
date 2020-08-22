@@ -6,8 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="15.0.5" />
+    <PackageReference Include="LevelDB.Standard" Version="2.1.7-beta1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NLog" Version="4.7.3" />
+    <PackageReference Include="NLog" Version="4.7.4" />
     <PackageReference Include="Sentry" Version="2.1.6" />
   </ItemGroup>
 

@@ -20,7 +20,7 @@ namespace DiscordExplorer.Common
         [OneTimeTearDown]
         public static void TearDown()
         {
-            //Directory.Delete(OUTPUT, true);
+            Directory.Delete(OUTPUT, true);
         }
 
         [Test(Author = "mdawsonuk")]

@@ -111,6 +111,20 @@ namespace DiscordExplorer
 
         private void OnOpenButtonClick(object sender, EventArgs e)
         {
+            using var levelDb = new FolderBrowserDialog
+            {
+                Description = "Open LevelDB Folder",
+                UseDescriptionForTitle = true,
+                ShowNewFolderButton = false,
+            };
+
+            DialogResult levelDbResult = levelDb.ShowDialog();
+
+            if (levelDbResult == DialogResult.OK && !string.IsNullOrWhiteSpace(levelDb.SelectedPath))
+            {
+                // 
+            }
+
             using var indexFile = new OpenFileDialog
             {
                 AddExtension = false,
@@ -133,6 +147,8 @@ namespace DiscordExplorer
                 MessageBox.Show("The Discord Cache cannot be parsed while Discord is open. Please quit Discord by right clicking on the tray icon and quitting. Press OK once this has been completed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);// Is running
                 return;
             }
+
+            //Config.GetDiscordLevelDBLocation()
 
             LoadDiscordFiles(Path.Combine(Config.GetDiscordCacheLocation(), "index"));
         }

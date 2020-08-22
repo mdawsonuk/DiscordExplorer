@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Humanizer" Version="2.8.26" />
-    <PackageReference Include="NLog" Version="4.7.3" />
+    <PackageReference Include="NLog" Version="4.7.4" />
     <PackageReference Include="Sentry" Version="2.1.6" />
   </ItemGroup>
 
