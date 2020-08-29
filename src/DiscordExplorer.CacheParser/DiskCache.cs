@@ -28,6 +28,41 @@ namespace DiscordExplorer.CacheParser
 		internal const Int32 kMaxBlocks = (kBlockHeaderSize - 80) * 8;
 		internal const Int32 kNumExtraBlocks = 1024;  // How fast files grow.
 
+		internal static CacheAddrStruct parseCacheAddress(CacheAddr addr, bool debug = false) 
+		{
+			if (debug)
+				Console.WriteLine($"Address:\t0x{addr:x}");
+
+			CacheAddrStruct addrStruct = new CacheAddrStruct();
+			addrStruct.initialized = (addr >> 28 >> 3) == 1;
+			addrStruct.fileType = (byte)((addr >> 28) & 1);
+			addrStruct.reserved = (byte)(addr >> 24 >> 2);
+			addrStruct.blockSize = (byte)((addr >> 24) & 3);
+			addrStruct.fileNumber = (byte)((addr >> 16) & 0xff);
+			addrStruct.blockNumber = (UInt16)(addr & 0xffff);
+
+			if (debug)
+			{
+				Console.WriteLine($"Initialized:\t{addrStruct.initialized}");
+				Console.WriteLine($"fileType:\t{addrStruct.fileType}");
+				Console.WriteLine($"blockSize:\t{addrStruct.blockSize}");
+				Console.WriteLine($"FileNumber:\t{addrStruct.fileNumber}");
+				Console.WriteLine($"blockNumber:\t0x{addrStruct.blockNumber:x}");
+			}
+			return addrStruct;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct CacheAddrStruct 
+		{
+			internal bool			initialized;	// 1  Bit.  Initialized flag
+			internal byte			fileType;		// 3  Bits.	File Type, 0 = f_xxxx else data_xxxx
+			internal byte			reserved;		// 2  Bits. 
+			internal byte			blockSize;		// 2  Bits. The number of contiguous blocks 0 = 1 block, 3 = 4 blocks
+			internal byte			fileNumber;		// 8  Bits. The value of the xxxx in data_xxxx
+			internal UInt16			blockNumber;	// 16 Bits. The number of the block in the file
+		};
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct LruData
         {
@@ -101,6 +136,57 @@ namespace DiscordExplorer.CacheParser
 			internal Int32[] 		user;
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = (kMaxBlocks / 32))]
 			internal Int32[]		allocation_map;	// Bitmap to track used blocks on a block-file
+		};
+
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct RankingsNode
+		{
+			internal UInt64			last_used;		// LRU info.
+			internal UInt64			last_modified;	// LRU info.
+			internal CacheAddr		next;			// LRU list.
+			internal CacheAddr		prev;			// LRU list.
+			internal CacheAddr		contents;		// Address of the EntryStore.
+			internal Int32			dirty;			// The entry is being modified.
+			internal UInt32			self_hash;		// RankingsNode's hash.
+		};
+
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct EntryStore
+		{
+			internal UInt32			hash;			// Full hash of the key.
+			internal CacheAddr		next;			// Next entry with the same hash or bucket.
+			internal CacheAddr		rankings_node;	// Rankings node for this entry.
+			internal Int32			reuse_count;	// How often is this entry used.
+			internal Int32			refetch_count;	// How often is this fetched from the net.
+			internal Int32			state;			// Current state.
+			internal UInt64			creation_time;	
+			internal Int32			key_len;
+			internal CacheAddr		long_key;		// Optional address of a long key.
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+			internal Int32[]		data_size;		// We can store up to 4 data streams for each
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+			internal CacheAddr[]	data_addr;		// entry.
+			internal UInt32			flags;			// Any combination of EntryFlags.
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+			internal Int32[]		pad;			
+			internal UInt32			self_hash;		// The hash of EntryStore up to this point.
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 256 - (24*4))]
+			internal byte[]			key;			// null terminated
+		};
+		
+		[Flags]
+		internal enum EntryState
+		{
+			ENTRY_NORMAL,
+			ENTRY_EVICTED,
+			ENTRY_DOOMED
+		};
+
+		[Flags]
+		internal enum EntryFlags
+		{
+			PARENT_ENTRY,
+			CHILD_ENTRY
 		};
     }
 }

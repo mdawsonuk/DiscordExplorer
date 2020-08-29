@@ -22,23 +22,22 @@ namespace DiscordExplorer.CacheParser
 
 			// Debug 
 			Console.WriteLine();
-			BlockFileParse.parse(validBlockFiles[0]);
 
-			/* Parsing an CacheAddr
+			DiskCache.BlockFileHeader header = BlockFileParse.parseHeader(validBlockFiles[1]);
+			List<DiskCache.EntryStore> entries = BlockFileParse.parseBlocks<DiskCache.EntryStore>(validBlockFiles[1], header);
+
+			/* Parsing an CacheAddr */
+			/* TODO
+			 * Debug in BlockFileParse.parseBlocks
+			 * Automate getting addresses
+			 * Load all the headers and entries, and use CacheAddrStruct.fileNumber to determine which to use
+			 * Figure out what to do if CacheAddrStruct.type == 0 (f_xxxx)
+			 * */
 			UInt32 addr = (UInt32)index.table[0];
-			Console.WriteLine($"Address:\t0x{addr:x}");
-			uint type = addr >> 32;
-			addr &= 0x0fffffff;
-			uint reserved = (addr >> 24) >> 2;
-			uint blockSize = (addr >> 24) & 0x3;
-			uint fileNum = (addr >> 16) & 0xff;
-			uint blockNum = addr & 0xffff;
-			Console.WriteLine($"reserved:\t0x{reserved:x}");
-			Console.WriteLine($"blockSize:\t0x{blockSize:x}");
-			Console.WriteLine($"fileNum:\t0x{fileNum:x}");
-			Console.WriteLine($"blockNum:\t0x{blockNum:x}");
-			*/
-
+			DiskCache.CacheAddrStruct addrStruct = DiskCache.parseCacheAddress(addr, true);
+			Console.WriteLine($"EntryStore.hash: 0x{entries[addrStruct.blockNumber].hash:x}");
+			Console.WriteLine($"EntryStore.next: 0x{entries[addrStruct.blockNumber].next:x}");
+			Console.WriteLine($"EntryStore.key: [{System.Text.Encoding.Default.GetString(entries[addrStruct.blockNumber].key)}]");
         }
     }
 }

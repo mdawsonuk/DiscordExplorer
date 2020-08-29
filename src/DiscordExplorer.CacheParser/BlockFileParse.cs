@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace DiscordExplorer.CacheParser
 {
@@ -25,7 +26,7 @@ namespace DiscordExplorer.CacheParser
 
 				if (header.magic != DiskCache.kBlockMagic)
 				{
-					throw new FileFormatException("Index file parse failed - Invalid Magic Number");	
+					throw new FileFormatException("Block file parse failed - Invalid Magic Number");	
 				}
 				
 				// debug output
@@ -64,9 +65,33 @@ namespace DiscordExplorer.CacheParser
 			}
 		}
 
-		internal static void parse(string blockFile, bool debug = false)
+		internal static List<T> parseBlocks<T>(string blockFile, DiskCache.BlockFileHeader header, bool debug = false)
 		{
-			DiskCache.BlockFileHeader header = parseHeader(blockFile);
+			List<T> blockEntries = new List<T>();
+
+			if (Marshal.SizeOf(typeof(T)) != header.entry_size)
+			{
+			    throw new FileFormatException("Block file parse failed - Invalid entry type");
+			}
+
+			Console.WriteLine($"Entries of size:   [{header.entry_size}]");
+			Console.WriteLine($"Number of entries: [{header.num_entries}]");
+			Console.WriteLine($"Number of max entries: [{header.max_entries}]");
+
+			FileStream file = File.Open(blockFile, FileMode.Open, FileAccess.Read);
+			file.Seek(0x2000, SeekOrigin.Begin);
+			using (BinaryReader br = new BinaryReader(file))
+			{
+
+				for (int i = 0; i < header.max_entries; i++) 
+				{
+					T block = (T)Activator.CreateInstance(typeof(T));
+					block = Util.ByteToType<T>(br);
+					blockEntries.Add(block);
+				}
+			}
+
+			return blockEntries;
 		}
 	}
 }
