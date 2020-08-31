@@ -56,7 +56,7 @@ namespace DiscordExplorer.CacheParser
 			Console.WriteLine($"payload length : 0x{httpReq.payload_length:x}");
 			Console.WriteLine($"Header         : {httpReq.http_header}");
 
-			BinaryReader br = httpReq.GetPayload();
+			BinaryReader br = httpReq.GetStream();
 			byte[] payloadStart = br.ReadBytes(16);
 			Console.WriteLine($"Payload start  : [{System.Text.Encoding.Default.GetString(payloadStart)}]");
 

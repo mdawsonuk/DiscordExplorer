@@ -230,7 +230,7 @@ namespace DiscordExplorer.CacheParser
 				}
 			}
 
-			internal BinaryReader GetPayload() 
+			internal BinaryReader GetStream() 
 			{
 				FileStream fs = new FileStream(payload_file, FileMode.Open);
 				fs.Seek(payload_offset, SeekOrigin.Begin);
