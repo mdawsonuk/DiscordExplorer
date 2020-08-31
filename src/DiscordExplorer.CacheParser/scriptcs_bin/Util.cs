@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace DiscordExplorer.CacheParser
@@ -22,6 +23,12 @@ namespace DiscordExplorer.CacheParser
 			TimeSpan time = TimeSpan.FromMilliseconds((double)(timestamp/1000));
 			DateTime date = new DateTime(1601, 1, 1) + time;
 			return date;
+		}
+
+		internal static object CreateDynamicList(Type type, params object[] args)
+		{
+			Type specificType = typeof(List<>).MakeGenericType(new Type[] { type } );
+			return Activator.CreateInstance(specificType, args);
 		}
     }
 }

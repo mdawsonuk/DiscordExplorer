@@ -7,6 +7,9 @@ namespace DiscordExplorer.CacheParser
 {
 	internal static class BlockFileParse
 	{
+		// <summary>
+		// Parses the header of a data_n file
+		// </summary>
 		internal static DiskCache.BlockFileHeader parseHeader(string blockFile, bool debug = false)
 		{
 			if (debug)
@@ -14,9 +17,7 @@ namespace DiscordExplorer.CacheParser
 
 			/* check whether the file exists and throw an exception otherwise */
 			if (!File.Exists(blockFile))
-			{
 				throw new FileNotFoundException("Couldn't open block file.");
-			}
 
 			/* parse the index file */
 			using (BinaryReader br = new BinaryReader(File.Open(blockFile, FileMode.Open, FileAccess.Read)))
@@ -25,9 +26,7 @@ namespace DiscordExplorer.CacheParser
 				header = Util.ByteToType<DiskCache.BlockFileHeader>(br);
 
 				if (header.magic != DiskCache.kBlockMagic)
-				{
 					throw new FileFormatException("Block file parse failed - Invalid Magic Number");	
-				}
 				
 				// debug output
 				if (debug)
@@ -65,18 +64,23 @@ namespace DiscordExplorer.CacheParser
 			}
 		}
 
+		// <summary>
+		// Parses the blocks in a data_n file
+		// Skips over the 0x2000 byte header
+		// </summary>
 		internal static List<T> parseBlocks<T>(string blockFile, DiskCache.BlockFileHeader header, bool debug = false)
 		{
 			List<T> blockEntries = new List<T>();
 
 			if (Marshal.SizeOf(typeof(T)) != header.entry_size)
-			{
 			    throw new FileFormatException("Block file parse failed - Invalid entry type");
-			}
 
-			Console.WriteLine($"Entries of size:   [{header.entry_size}]");
-			Console.WriteLine($"Number of entries: [{header.num_entries}]");
-			Console.WriteLine($"Number of max entries: [{header.max_entries}]");
+			if (debug)
+			{
+				Console.WriteLine($"Entries of size:   [{header.entry_size}]");
+				Console.WriteLine($"Number of entries: [{header.num_entries}]");
+				Console.WriteLine($"Number of max entries: [{header.max_entries}]");
+			}
 
 			FileStream file = File.Open(blockFile, FileMode.Open, FileAccess.Read);
 			file.Seek(0x2000, SeekOrigin.Begin);

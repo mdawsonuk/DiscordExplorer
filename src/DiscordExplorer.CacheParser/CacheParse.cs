@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace DiscordExplorer.CacheParser
 {
@@ -23,21 +24,26 @@ namespace DiscordExplorer.CacheParser
 			// Debug 
 			Console.WriteLine();
 
-			DiskCache.BlockFileHeader header = BlockFileParse.parseHeader(validBlockFiles[1]);
-			List<DiskCache.EntryStore> entries = BlockFileParse.parseBlocks<DiskCache.EntryStore>(validBlockFiles[1], header);
+			DiskCache.BlockFilesStructure blockFiles = new DiskCache.BlockFilesStructure();
+			blockFiles[0] = new DiskCache.BlockFile<DiskCache.RankingsNode>(validBlockFiles[0]);
+			blockFiles[1] = new DiskCache.BlockFile<DiskCache.EntryStore>(validBlockFiles[1]);
 
 			/* Parsing an CacheAddr */
 			/* TODO
-			 * Debug in BlockFileParse.parseBlocks
 			 * Automate getting addresses
-			 * Load all the headers and entries, and use CacheAddrStruct.fileNumber to determine which to use
 			 * Figure out what to do if CacheAddrStruct.type == 0 (f_xxxx)
 			 * */
+
+
 			UInt32 addr = (UInt32)index.table[0];
 			DiskCache.CacheAddrStruct addrStruct = DiskCache.parseCacheAddress(addr, true);
-			Console.WriteLine($"EntryStore.hash: 0x{entries[addrStruct.blockNumber].hash:x}");
-			Console.WriteLine($"EntryStore.next: 0x{entries[addrStruct.blockNumber].next:x}");
-			Console.WriteLine($"EntryStore.key: [{System.Text.Encoding.Default.GetString(entries[addrStruct.blockNumber].key)}]");
+			dynamic blocks = DiskCache.getBlocks(addrStruct, blockFiles);
+
+			Console.WriteLine();
+			Console.WriteLine($"Number of blocks read : {blocks.Count}");
+			Console.WriteLine($"Type of block read : {blocks[0].GetType()}");
+			Console.WriteLine($"EntryStore.key : {System.Text.Encoding.Default.GetString(blocks[0].key)}");
+
         }
     }
 }

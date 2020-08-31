@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace DiscordExplorer.CacheParser
 {
@@ -28,18 +29,22 @@ namespace DiscordExplorer.CacheParser
 		internal const Int32 kMaxBlocks = (kBlockHeaderSize - 80) * 8;
 		internal const Int32 kNumExtraBlocks = 1024;  // How fast files grow.
 
+		// <summary>
+		// Parses a CacheAddr variable
+		// returns a struct of the values
+		// </summary>
 		internal static CacheAddrStruct parseCacheAddress(CacheAddr addr, bool debug = false) 
 		{
 			if (debug)
 				Console.WriteLine($"Address:\t0x{addr:x}");
 
-			CacheAddrStruct addrStruct = new CacheAddrStruct();
-			addrStruct.initialized = (addr >> 28 >> 3) == 1;
-			addrStruct.fileType = (byte)((addr >> 28) & 1);
-			addrStruct.reserved = (byte)(addr >> 24 >> 2);
-			addrStruct.blockSize = (byte)((addr >> 24) & 3);
-			addrStruct.fileNumber = (byte)((addr >> 16) & 0xff);
-			addrStruct.blockNumber = (UInt16)(addr & 0xffff);
+			CacheAddrStruct addrStruct 	= new CacheAddrStruct();
+			addrStruct.initialized 		= (addr >> 28 >> 3) == 1;
+			addrStruct.fileType 		= (byte)((addr >> 28) & 1);
+			addrStruct.reserved 		= (byte)(addr >> 24 >> 2);
+			addrStruct.blockSize 		= (byte)((addr >> 24) & 3);
+			addrStruct.fileNumber 		= (byte)((addr >> 16) & 0xff);
+			addrStruct.blockNumber 		= (UInt16)(addr & 0xffff);
 
 			if (debug)
 			{
@@ -52,6 +57,23 @@ namespace DiscordExplorer.CacheParser
 			return addrStruct;
 		}
 
+		// <summary>
+		// Generates a list of contiguous blocks from given address
+		// Automatically detects which block file to use
+		// Ensure to type the resulting variable as dynamic
+		// </summary>
+		internal static dynamic getBlocks(CacheAddrStruct addrStruct, BlockFilesStructure blockFiles)
+		{
+			if (addrStruct.blockNumber >= blockFiles[addrStruct.fileNumber].blocks.Count)
+				throw new IndexOutOfRangeException("Index out of range");
+
+			dynamic contiguousBlocks = Util.CreateDynamicList(blockFiles[addrStruct.fileNumber].blocks[0].GetType());
+
+			for (int i = 0; i <= addrStruct.blockSize; i++)
+			    contiguousBlocks.Add(blockFiles[addrStruct.fileNumber].blocks[addrStruct.blockNumber]);
+			return contiguousBlocks;
+		}
+
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct CacheAddrStruct 
 		{
@@ -61,6 +83,95 @@ namespace DiscordExplorer.CacheParser
 			internal byte			blockSize;		// 2  Bits. The number of contiguous blocks 0 = 1 block, 3 = 4 blocks
 			internal byte			fileNumber;		// 8  Bits. The value of the xxxx in data_xxxx
 			internal UInt16			blockNumber;	// 16 Bits. The number of the block in the file
+		};
+
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct BlockFileHeader
+		{
+			internal UInt32			magic;
+			internal UInt32			version;
+			internal Int16			this_file;		// Index of this file.
+			internal Int16			next_file;		// Next file when this one is full.
+			internal Int32			entry_size;		// Size of the blocks of this file. 
+			internal Int32			num_entries;	// Number of stored entries.
+			internal Int32			max_entries;	// Current maximum number of entries.
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+			internal Int32[]		empty;			// Counters of empty entries for each type.
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+			internal Int32[]		hints;			// Last used position for each entry type.
+			internal volatile Int32	updating;		// Keep track of updates to the header.
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
+			internal Int32[] 		user;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = (kMaxBlocks / 32))]
+			internal Int32[]		allocation_map;	// Bitmap to track used blocks on a block-file
+		};
+
+		internal class BlockFile<T>
+		{
+			// <summary>
+			// Class constructor
+			// Generates header and blocks for the type of block file given
+			// </summary>
+			internal BlockFile(string blockFilename)
+			{
+				header = BlockFileParse.parseHeader(blockFilename);
+				blocks = BlockFileParse.parseBlocks<T>(blockFilename, header);	
+			}
+
+			internal BlockFileHeader	header { get; }
+			internal List<T>			blocks { get; }
+		}
+
+		internal class BlockFilesStructure
+		{
+			// <summary>
+			// Indexing operator on class object
+			// </summary>
+			internal dynamic this[int index]
+			{
+				get 
+				{
+					switch(index)
+					{
+						case 0:
+							return data_0;
+						case 1:
+							return data_1;
+						case 2:
+							return data_2;
+						case 3:
+							return data_3;
+						default:
+							throw new IndexOutOfRangeException("Index out of range");
+					}
+				}
+
+				set
+				{
+					switch(index)
+					{
+						case 0:
+							data_0 = value;
+							break;
+						case 1:
+							data_1 = value;
+							break;
+						case 2:
+							data_2 = value;
+							break;
+						case 3:
+							data_3 = value;
+							break;
+						default:
+							throw new IndexOutOfRangeException("Index out of range");
+					}
+				}
+			}
+
+			internal BlockFile<RankingsNode> 	data_0 { get; set; }
+			internal BlockFile<EntryStore>		data_1 { get; set; } 
+			internal BlockFile<UInt64>			data_2 { get; set; }
+			internal BlockFile<UInt64>			data_3 { get; set; }
 		};
 
         [StructLayout(LayoutKind.Sequential)]
@@ -117,36 +228,23 @@ namespace DiscordExplorer.CacheParser
 			}
 		};
 
-		[StructLayout(LayoutKind.Sequential)]
-		internal struct BlockFileHeader
-		{
-			internal UInt32			magic;
-			internal UInt32			version;
-			internal Int16			this_file;		// Index of this file.
-			internal Int16			next_file;		// Next file when this one is full.
-			internal Int32			entry_size;		// Size of the blocks of this file. 
-			internal Int32			num_entries;	// Number of stored entries.
-			internal Int32			max_entries;	// Current maximum number of entries.
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-			internal Int32[]		empty;			// Counters of empty entries for each type.
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-			internal Int32[]		hints;			// Last used position for each entry type.
-			internal volatile Int32	updating;		// Keep track of updates to the header.
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
-			internal Int32[] 		user;
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = (kMaxBlocks / 32))]
-			internal Int32[]		allocation_map;	// Bitmap to track used blocks on a block-file
-		};
 
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Explicit, Size=36)]
 		internal struct RankingsNode
 		{
+			[FieldOffset(0)]
 			internal UInt64			last_used;		// LRU info.
+			[FieldOffset(8)]
 			internal UInt64			last_modified;	// LRU info.
+			[FieldOffset(16)]
 			internal CacheAddr		next;			// LRU list.
+			[FieldOffset(20)]
 			internal CacheAddr		prev;			// LRU list.
+			[FieldOffset(24)]
 			internal CacheAddr		contents;		// Address of the EntryStore.
+			[FieldOffset(28)]
 			internal Int32			dirty;			// The entry is being modified.
+			[FieldOffset(32)]
 			internal UInt32			self_hash;		// RankingsNode's hash.
 		};
 
@@ -187,6 +285,16 @@ namespace DiscordExplorer.CacheParser
 		{
 			PARENT_ENTRY,
 			CHILD_ENTRY
+		};
+
+		internal enum FileTypes
+		{
+			SEPARATE,
+			BLOCK_36,
+			BLOCK_256,
+			BLOCK_4096,
+			UNKNOWN,
+			MACOS
 		};
     }
 }
