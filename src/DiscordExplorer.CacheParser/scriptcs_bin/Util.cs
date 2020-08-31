@@ -17,6 +17,33 @@ namespace DiscordExplorer.CacheParser
 
             return theStructure;
         }
+
+		internal static void ReplaceByte(ref byte[] arr, byte before, byte after)
+		{
+			for (int i = 0; i < arr.Length; i++) 
+			{
+				if (arr[i] == before)
+					arr[i] = after;
+			}
+		}
+
+		internal static byte[] ReadNBytesFrom(string filename, long offset, int count)
+		{
+			if (!File.Exists(filename))
+				throw new FileNotFoundException($"Couldn't open file [{filename}]");
+
+			FileStream fs = new FileStream(filename, FileMode.Open);
+			fs.Seek(offset, SeekOrigin.Begin);
+
+			BinaryReader br = new BinaryReader(fs);
+			byte[] outBuffer = br.ReadBytes((int)count);
+			return outBuffer;
+		}
+
+		internal static byte[] SliceByteArray(byte[] orig, UInt32 start, UInt32 end)
+		{
+			return new List<byte>(orig).GetRange((int)start, (int)end).ToArray();
+		}
 	
 		internal static DateTime ConvertWebkitTime(ulong timestamp)
 		{

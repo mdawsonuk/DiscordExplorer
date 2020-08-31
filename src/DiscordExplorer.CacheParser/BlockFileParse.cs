@@ -73,7 +73,11 @@ namespace DiscordExplorer.CacheParser
 			List<T> blockEntries = new List<T>();
 
 			if (Marshal.SizeOf(typeof(T)) != header.entry_size)
+			{
+				Console.WriteLine($"Marshal : {Marshal.SizeOf(typeof(T))}");
+				Console.WriteLine($"Header  : {header.entry_size}");
 			    throw new FileFormatException("Block file parse failed - Invalid entry type");
+			}
 
 			if (debug)
 			{

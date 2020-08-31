@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Reflection;
+using System.IO;
 
 namespace DiscordExplorer.CacheParser
 {
@@ -40,10 +41,17 @@ namespace DiscordExplorer.CacheParser
 
 			CacheAddrStruct addrStruct 	= new CacheAddrStruct();
 			addrStruct.initialized 		= (addr >> 28 >> 3) == 1;
-			addrStruct.fileType 		= (byte)((addr >> 28) & 1);
+			addrStruct.fileType 		= (byte)((addr >> 28) & 7);
+			
+			if (addrStruct.fileType == 0)
+			{
+				// If f_xxxxxx
+				addrStruct.fileNumber = (int)(addr & 0x00ffffff);
+				return addrStruct;
+			}
 			addrStruct.reserved 		= (byte)(addr >> 24 >> 2);
 			addrStruct.blockSize 		= (byte)((addr >> 24) & 3);
-			addrStruct.fileNumber 		= (byte)((addr >> 16) & 0xff);
+			addrStruct.fileNumber 		= (int)((addr >> 16) & 0xff);
 			addrStruct.blockNumber 		= (UInt16)(addr & 0xffff);
 
 			if (debug)
@@ -64,6 +72,9 @@ namespace DiscordExplorer.CacheParser
 		// </summary>
 		internal static dynamic getBlocks(CacheAddrStruct addrStruct, BlockFilesStructure blockFiles)
 		{
+			if (addrStruct.fileType == 0)
+				throw new System.IO.FileFormatException("Expected address to lead to f_xxx files instead led to data_n");
+
 			if (addrStruct.blockNumber >= blockFiles[addrStruct.fileNumber].blocks.Count)
 				throw new IndexOutOfRangeException("Index out of range");
 
@@ -81,7 +92,7 @@ namespace DiscordExplorer.CacheParser
 			internal byte			fileType;		// 3  Bits.	File Type, 0 = f_xxxx else data_xxxx
 			internal byte			reserved;		// 2  Bits. 
 			internal byte			blockSize;		// 2  Bits. The number of contiguous blocks 0 = 1 block, 3 = 4 blocks
-			internal byte			fileNumber;		// 8  Bits. The value of the xxxx in data_xxxx
+			internal int			fileNumber;		// 8  Bits. The value of the xxxx in data_xxxx
 			internal UInt16			blockNumber;	// 16 Bits. The number of the block in the file
 		};
 
@@ -171,8 +182,67 @@ namespace DiscordExplorer.CacheParser
 			internal BlockFile<RankingsNode> 	data_0 { get; set; }
 			internal BlockFile<EntryStore>		data_1 { get; set; } 
 			internal BlockFile<UInt64>			data_2 { get; set; }
-			internal BlockFile<UInt64>			data_3 { get; set; }
+			internal BlockFile<Data3Block>		data_3 { get; set; }
 		};
+
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct Data3Block
+		{
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
+			internal UInt32[]		unknown;
+			internal UInt32			length;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = (4096 - (4 * 7)))]
+			internal byte[]			http_header;
+		}
+
+		internal class HttpInformation
+		{
+			internal HttpInformation(EntryStore parent, BlockFilesStructure blockFiles, string cacheDir)
+			{
+				// Getting & Setting http_header 
+				CacheAddrStruct header = parseCacheAddress(parent.data_addr[0]);
+				dynamic blocks = getBlocks(header, blockFiles);
+				byte[] http_str = Util.SliceByteArray(blocks[0].http_header, 0, blocks[0].length);
+				Util.ReplaceByte(ref http_str, (byte)0x00, (byte)0x0A);
+				http_header = System.Text.Encoding.Default.GetString(http_str);
+
+				// Getting & Setting payload information
+				// There's gotta be a better way to implement this with just structs
+				// But having 2 different block types kinda screws everything over
+				CacheAddrStruct payload = parseCacheAddress(parent.data_addr[1]);
+				
+				if (payload.fileType != 0)
+				{
+					// data_n
+					int entrySize = (int)blockFiles[payload.fileNumber].header.entry_size;
+					payload_offset = (long)(entrySize * payload.blockNumber + 0x2000);
+					payload_length = (int)(entrySize * (payload.blockSize + 1));
+
+					payload_file = Path.Combine(cacheDir, $"data_{payload.fileNumber}");
+				}
+				else 
+				{
+					// f_xxxx
+					payload_offset = 0x0;
+					payload_length = -1;	// To the end
+
+					payload_file = Path.Combine(cacheDir, "f_" + payload.fileNumber.ToString("x6"));
+				}
+			}
+
+			internal BinaryReader GetPayload() 
+			{
+				FileStream fs = new FileStream(payload_file, FileMode.Open);
+				fs.Seek(payload_offset, SeekOrigin.Begin);
+				return new BinaryReader(fs);
+			}
+
+
+			internal string 		http_header { get; }
+			internal string			payload_file { get; }
+			internal long			payload_offset { get; }
+			internal int			payload_length { get; }
+		}
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct LruData
@@ -227,7 +297,6 @@ namespace DiscordExplorer.CacheParser
 				this.table = table;
 			}
 		};
-
 
 		[StructLayout(LayoutKind.Explicit, Size=36)]
 		internal struct RankingsNode
