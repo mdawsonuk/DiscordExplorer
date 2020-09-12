@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Reflection;
 using System.IO;
 
 namespace DiscordExplorer.CacheParser
@@ -13,7 +12,7 @@ namespace DiscordExplorer.CacheParser
 
     using CacheAddr = UInt32;
 
-    internal class DiskCache
+    public class DiskCache
     {
 
 		// Index constants
@@ -34,7 +33,7 @@ namespace DiscordExplorer.CacheParser
 		// Parses a CacheAddr variable
 		// returns a struct of the values
 		// </summary>
-		internal static CacheAddrStruct parseCacheAddress(CacheAddr addr, bool debug = false) 
+		internal static CacheAddrStruct ParseCacheAddress(CacheAddr addr, bool debug = false) 
 		{
 			if (debug)
 				Console.WriteLine($"Address:\t0x{addr:x}");
@@ -70,10 +69,10 @@ namespace DiscordExplorer.CacheParser
 		// Automatically detects which block file to use
 		// Ensure to type the resulting variable as dynamic
 		// </summary>
-		internal static dynamic getBlocks(CacheAddrStruct addrStruct, BlockFilesStructure blockFiles)
+		internal static dynamic GetBlocks(CacheAddrStruct addrStruct, BlockFilesStructure blockFiles)
 		{
 			if (addrStruct.fileType == 0)
-				throw new System.IO.FileFormatException("Expected address to lead to f_xxx files instead led to data_n");
+				throw new FileFormatException("Expected address to lead to f_xxx files instead led to data_n");
 
 			if (addrStruct.blockNumber >= blockFiles[addrStruct.fileNumber].blocks.Count)
 				throw new IndexOutOfRangeException("Index out of range");
@@ -195,13 +194,14 @@ namespace DiscordExplorer.CacheParser
 			internal byte[]			http_header;
 		}
 
-		internal class HttpInformation
+		public class HttpInformation
 		{
 			internal HttpInformation(EntryStore parent, BlockFilesStructure blockFiles, string cacheDir)
 			{
 				// Getting & Setting http_header 
-				CacheAddrStruct header = parseCacheAddress(parent.data_addr[0]);
-				dynamic blocks = getBlocks(header, blockFiles);
+				CacheAddrStruct header = ParseCacheAddress(parent.data_addr[0]);
+				dynamic blocks = GetBlocks(header, blockFiles);
+				url = System.Text.Encoding.Default.GetString(parent.key);
 				byte[] http_str = Util.SliceByteArray(blocks[0].http_header, 0, blocks[0].length);
 				Util.ReplaceByte(ref http_str, (byte)0x00, (byte)0x0A);
 				http_header = System.Text.Encoding.Default.GetString(http_str);
@@ -209,7 +209,7 @@ namespace DiscordExplorer.CacheParser
 				// Getting & Setting payload information
 				// There's gotta be a better way to implement this with just structs
 				// But having 2 different block types kinda screws everything over
-				CacheAddrStruct payload = parseCacheAddress(parent.data_addr[1]);
+				CacheAddrStruct payload = ParseCacheAddress(parent.data_addr[1]);
 				
 				if (payload.fileType != 0)
 				{
@@ -242,6 +242,7 @@ namespace DiscordExplorer.CacheParser
 			internal string			payload_file { get; }
 			internal long			payload_offset { get; }
 			internal int			payload_length { get; }
+			internal string			url { get; }
 		}
 
         [StructLayout(LayoutKind.Sequential)]

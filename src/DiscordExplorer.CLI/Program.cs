@@ -46,7 +46,7 @@ namespace DiscordExplorer.CLI
 
                     // Basic logging while developing
                     Console.WriteLine($"Current Arguments -> CacheDir: {cacheDir}");
-                    CacheParse.parse(cacheDir);
+                    CacheParse.Parse(cacheDir);
                 }
             );
         }

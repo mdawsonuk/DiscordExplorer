@@ -1,12 +1,18 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DiscordExplorer.CacheParser
 {
     public class CacheParse
     {
-        public static void parse(string cacheDir)
+		/// <summary>
+		/// Parses the Cache directory at the given path
+		/// </summary>
+		/// <param name="cacheDir">Path to the cache directory</param>
+		/// <returns>Array of HTTP information about the file. This can be used to get a stream to the file contents</returns>
+        public static List<DiskCache.HttpInformation> Parse(string cacheDir)
         {
             string indexFile = Path.Combine(cacheDir, "index");
 			List<string> validBlockFiles = new List<string>();
@@ -28,16 +34,27 @@ namespace DiscordExplorer.CacheParser
 			blockFiles[1] = new DiskCache.BlockFile<DiskCache.EntryStore>(validBlockFiles[1]);
 			blockFiles[3] = new DiskCache.BlockFile<DiskCache.Data3Block>(validBlockFiles[3]);
 
-			/* Parsing an CacheAddr */
-			/* TODO
-			 * Automate getting addresses
-			 * Figure out what to do if CacheAddrStruct.type == 0 (f_xxxx)
-			 * */
+			List<DiskCache.HttpInformation> files = new List<DiskCache.HttpInformation>();
 
+			// Iterate every address
+			foreach (UInt32 address in index.table)
+            {
+				DiskCache.CacheAddrStruct addressStruct = DiskCache.ParseCacheAddress(address);
+				dynamic addressBlocks = DiskCache.GetBlocks(addressStruct, blockFiles);
+				try
+                {
+					DiskCache.HttpInformation request = new DiskCache.HttpInformation(addressBlocks[0], blockFiles, cacheDir);
+					files.Add(request);
+				}
+				catch (Exception e)
+                {
+					Console.WriteLine(e.Message);
+                }
+			}
 
-			UInt32 addr = (UInt32)index.table[0];
-			DiskCache.CacheAddrStruct addrStruct = DiskCache.parseCacheAddress(addr);
-			dynamic blocks = DiskCache.getBlocks(addrStruct, blockFiles);
+			/*UInt32 addr = (UInt32)index.table[0];
+			DiskCache.CacheAddrStruct addrStruct = DiskCache.ParseCacheAddress(addr);
+			dynamic blocks = DiskCache.GetBlocks(addrStruct, blockFiles);
 
 			Console.WriteLine();
 			Console.WriteLine($"Number of blocks read      : {blocks.Count}");
@@ -56,8 +73,19 @@ namespace DiscordExplorer.CacheParser
 
 			BinaryReader br = httpReq.GetStream();
 			byte[] payloadStart = br.ReadBytes(16);
-			Console.WriteLine($"Payload start  : [{System.Text.Encoding.Default.GetString(payloadStart)}]");
+			Console.WriteLine($"Payload start  : [{System.Text.Encoding.Default.GetString(payloadStart)}]");*/
 
+			Console.WriteLine();
+			Console.WriteLine($"Parsed {files.Count} out of {index.table.Count} from Disk Cache at {cacheDir}");
+
+			var fileInfo = files.Where(x => x.url.Contains("api/") && x.url.Contains("messages?limit=50")).First();
+			Console.WriteLine();
+			Console.WriteLine(fileInfo.payload_file);
+			Console.WriteLine(fileInfo.url);
+			var fileStream = fileInfo.GetStream();
+			//Console.WriteLine(System.Text.Encoding.Default.GetString(fileStream.ReadBytes(fileInfo.payload_length)));
+
+			return files;
         }
     }
 }
