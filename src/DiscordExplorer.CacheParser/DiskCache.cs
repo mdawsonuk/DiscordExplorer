@@ -29,17 +29,17 @@ namespace DiscordExplorer.CacheParser
 		internal const Int32 kMaxBlocks = (kBlockHeaderSize - 80) * 8;
 		internal const Int32 kNumExtraBlocks = 1024;  // How fast files grow.
 
-		// <summary>
-		// Parses a CacheAddr variable
-		// returns a struct of the values
-		// </summary>
+		/// <summary>
+		/// Parses a CacheAddr variable
+		/// returns a struct of the values
+		/// </summary>
 		internal static CacheAddrStruct ParseCacheAddress(CacheAddr addr, bool debug = false) 
 		{
 			if (debug)
 				Console.WriteLine($"Address:\t0x{addr:x}");
 
 			CacheAddrStruct addrStruct 	= new CacheAddrStruct();
-			addrStruct.initialized 		= (addr >> 28 >> 3) == 1;
+			addrStruct.initialized 		= (addr >> (28 + 3)) == 1;
 			addrStruct.fileType 		= (byte)((addr >> 28) & 7);
 			
 			if (addrStruct.fileType == 0)
@@ -64,18 +64,18 @@ namespace DiscordExplorer.CacheParser
 			return addrStruct;
 		}
 
-		// <summary>
-		// Generates a list of contiguous blocks from given address
-		// Automatically detects which block file to use
-		// Ensure to type the resulting variable as dynamic
-		// </summary>
+		/// <summary>
+		/// Generates a list of contiguous blocks from given address
+		/// Automatically detects which block file to use
+		/// Ensure to type the resulting variable as dynamic
+		/// </summary>
 		internal static dynamic GetBlocks(CacheAddrStruct addrStruct, BlockFilesStructure blockFiles)
 		{
 			if (addrStruct.fileType == 0)
 				throw new FileFormatException("Expected address to lead to f_xxx files instead led to data_n");
 
 			if (addrStruct.blockNumber >= blockFiles[addrStruct.fileNumber].blocks.Count)
-				throw new IndexOutOfRangeException("Index out of range");
+				throw new IndexOutOfRangeException("Index out of range - couldn't find block file, is the index file up to date?");
 
 			dynamic contiguousBlocks = Util.CreateDynamicList(blockFiles[addrStruct.fileNumber].blocks[0].GetType());
 
@@ -84,7 +84,7 @@ namespace DiscordExplorer.CacheParser
 			return contiguousBlocks;
 		}
 
-		[StructLayout(LayoutKind.Sequential)]
+		//[StructLayout(LayoutKind.Sequential)]
 		internal struct CacheAddrStruct 
 		{
 			internal bool			initialized;	// 1  Bit.  Initialized flag
@@ -118,10 +118,10 @@ namespace DiscordExplorer.CacheParser
 
 		internal class BlockFile<T>
 		{
-			// <summary>
-			// Class constructor
-			// Generates header and blocks for the type of block file given
-			// </summary>
+			/// <summary>
+			/// Class constructor
+			/// Generates header and blocks for the type of block file given
+			/// </summary>
 			internal BlockFile(string blockFilename)
 			{
 				header = BlockFileParse.parseHeader(blockFilename);
@@ -134,9 +134,9 @@ namespace DiscordExplorer.CacheParser
 
 		internal class BlockFilesStructure
 		{
-			// <summary>
-			// Indexing operator on class object
-			// </summary>
+			/// <summary>
+			/// Indexing operator on class object
+			/// </summary>
 			internal dynamic this[int index]
 			{
 				get 

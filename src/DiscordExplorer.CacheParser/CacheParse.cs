@@ -15,23 +15,28 @@ namespace DiscordExplorer.CacheParser
         public static List<DiskCache.HttpInformation> Parse(string cacheDir)
         {
             string indexFile = Path.Combine(cacheDir, "index");
+			/* check whether the file exists and throw an exception otherwise */
+            if (!File.Exists(indexFile))
+                throw new FileNotFoundException($"Couldn't open index file.");
+
 			List<string> validBlockFiles = new List<string>();
-			
 
 			for (int i = 0; i < 4; i++) 
 			{
 				if (File.Exists(Path.Combine(cacheDir, $"data_{i}")))
 					validBlockFiles.Add(Path.Combine(cacheDir, $"data_{i}"));
+				else
+					throw new FileNotFoundException($"Couldn't find data file {i}.");
 			}
 
 			DiskCache.Index index = IndexParse.parse(indexFile);
 
 			// Debug 
-			Console.WriteLine();
 
 			DiskCache.BlockFilesStructure blockFiles = new DiskCache.BlockFilesStructure();
 			blockFiles[0] = new DiskCache.BlockFile<DiskCache.RankingsNode>(validBlockFiles[0]);
 			blockFiles[1] = new DiskCache.BlockFile<DiskCache.EntryStore>(validBlockFiles[1]);
+			blockFiles[2] = new DiskCache.BlockFile<UInt64>(validBlockFiles[2]);
 			blockFiles[3] = new DiskCache.BlockFile<DiskCache.Data3Block>(validBlockFiles[3]);
 
 			List<DiskCache.HttpInformation> files = new List<DiskCache.HttpInformation>();
@@ -46,7 +51,7 @@ namespace DiscordExplorer.CacheParser
 					DiskCache.HttpInformation request = new DiskCache.HttpInformation(addressBlocks[0], blockFiles, cacheDir);
 					files.Add(request);
 				}
-				catch (Exception e)
+				catch (FileFormatException e)
                 {
 					Console.WriteLine(e.Message);
                 }

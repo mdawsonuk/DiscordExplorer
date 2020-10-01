@@ -12,12 +12,6 @@ namespace DiscordExplorer.CacheParser
 			if (debug)
 				Console.WriteLine($"Parsing index file: '{indexFile}'");
 
-            /* check whether the file exists and throw an exception otherwise */
-            if (!File.Exists(indexFile))
-            {
-                throw new FileNotFoundException($"Couldn't open index file.");
-            }
-
             /* parse the index file */
             using (BinaryReader br = new BinaryReader(File.Open(indexFile, FileMode.Open, FileAccess.Read)))
             {

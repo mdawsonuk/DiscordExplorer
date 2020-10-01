@@ -7,9 +7,9 @@ namespace DiscordExplorer.CacheParser
 {
 	internal static class BlockFileParse
 	{
-		// <summary>
-		// Parses the header of a data_n file
-		// </summary>
+		/// <summary>
+		/// Parses the header of a data_n file
+		/// </summary>
 		internal static DiskCache.BlockFileHeader parseHeader(string blockFile, bool debug = false)
 		{
 			if (debug)
